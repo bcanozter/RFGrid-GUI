@@ -19,9 +19,23 @@ namespace Tag_Scanner
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainWindow());
+
+            bool running = false;
+
+            using (System.Threading.Mutex mtex = new System.Threading.Mutex(true, "RFGrid GUI", out running))
+            {
+                if (running)
+                {
+                    Application.EnableVisualStyles();
+                    Application.SetCompatibleTextRenderingDefault(false);
+                    Application.Run(new MainWindow());
+                    mtex.ReleaseMutex();
+                }
+                else
+                {
+                    MessageBox.Show("RFGrid GUI is already running.");
+                }
+            }
         }
     }
 }

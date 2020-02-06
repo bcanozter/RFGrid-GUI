@@ -53,7 +53,7 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.dispCalibrateButton = new System.Windows.Forms.Button();
             this.displayInfoButton = new System.Windows.Forms.Button();
-            this.dispCalibTextBox = new System.Windows.Forms.TextBox();
+            this.dispCalibXBox = new System.Windows.Forms.TextBox();
             this.gridSizeLabel = new System.Windows.Forms.Label();
             this.connectedPortLabel = new System.Windows.Forms.Label();
             this.portTextLabel = new System.Windows.Forms.Label();
@@ -64,7 +64,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.debugTextBox = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.hiddenComLabel = new System.Windows.Forms.Label();
+            this.dispCalibYBox = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -267,9 +268,11 @@
             // groupBox2
             // 
             this.groupBox2.BackColor = System.Drawing.Color.Transparent;
+            this.groupBox2.Controls.Add(this.label4);
+            this.groupBox2.Controls.Add(this.dispCalibYBox);
             this.groupBox2.Controls.Add(this.dispCalibrateButton);
             this.groupBox2.Controls.Add(this.displayInfoButton);
-            this.groupBox2.Controls.Add(this.dispCalibTextBox);
+            this.groupBox2.Controls.Add(this.dispCalibXBox);
             this.groupBox2.Controls.Add(this.gridSizeLabel);
             this.groupBox2.Location = new System.Drawing.Point(390, 41);
             this.groupBox2.Name = "groupBox2";
@@ -290,7 +293,7 @@
             // 
             // displayInfoButton
             // 
-            this.displayInfoButton.Location = new System.Drawing.Point(165, 39);
+            this.displayInfoButton.Location = new System.Drawing.Point(185, 37);
             this.displayInfoButton.Name = "displayInfoButton";
             this.displayInfoButton.Size = new System.Drawing.Size(22, 23);
             this.displayInfoButton.TabIndex = 2;
@@ -298,12 +301,13 @@
             this.displayInfoButton.UseVisualStyleBackColor = true;
             this.displayInfoButton.Click += new System.EventHandler(this.DisplayInfoButton_Click);
             // 
-            // dispCalibTextBox
+            // dispCalibXBox
             // 
-            this.dispCalibTextBox.Location = new System.Drawing.Point(108, 41);
-            this.dispCalibTextBox.Name = "dispCalibTextBox";
-            this.dispCalibTextBox.Size = new System.Drawing.Size(51, 20);
-            this.dispCalibTextBox.TabIndex = 1;
+            this.dispCalibXBox.Location = new System.Drawing.Point(98, 40);
+            this.dispCalibXBox.MaxLength = 2;
+            this.dispCalibXBox.Name = "dispCalibXBox";
+            this.dispCalibXBox.Size = new System.Drawing.Size(21, 20);
+            this.dispCalibXBox.TabIndex = 1;
             // 
             // gridSizeLabel
             // 
@@ -311,9 +315,9 @@
             this.gridSizeLabel.Font = new System.Drawing.Font("Verdana", 11F);
             this.gridSizeLabel.Location = new System.Drawing.Point(6, 40);
             this.gridSizeLabel.Name = "gridSizeLabel";
-            this.gridSizeLabel.Size = new System.Drawing.Size(86, 18);
+            this.gridSizeLabel.Size = new System.Drawing.Size(81, 18);
             this.gridSizeLabel.TabIndex = 0;
-            this.gridSizeLabel.Text = "Grid Size :";
+            this.gridSizeLabel.Text = "Grid Size:";
             // 
             // connectedPortLabel
             // 
@@ -386,39 +390,48 @@
             // 
             // debugTextBox
             // 
-            this.debugTextBox.Location = new System.Drawing.Point(12, 333);
+            this.debugTextBox.BackColor = System.Drawing.Color.White;
+            this.debugTextBox.Location = new System.Drawing.Point(12, 439);
             this.debugTextBox.Multiline = true;
             this.debugTextBox.Name = "debugTextBox";
-            this.debugTextBox.Size = new System.Drawing.Size(435, 227);
+            this.debugTextBox.ReadOnly = true;
+            this.debugTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.debugTextBox.Size = new System.Drawing.Size(585, 121);
             this.debugTextBox.TabIndex = 16;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 308);
+            this.label3.Location = new System.Drawing.Point(18, 413);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(47, 13);
+            this.label3.Size = new System.Drawing.Size(39, 13);
             this.label3.TabIndex = 17;
-            this.label3.Text = "Terminal";
+            this.label3.Text = "Output";
             // 
-            // hiddenComLabel
+            // dispCalibYBox
             // 
-            this.hiddenComLabel.AutoSize = true;
-            this.hiddenComLabel.Location = new System.Drawing.Point(947, 557);
-            this.hiddenComLabel.Name = "hiddenComLabel";
-            this.hiddenComLabel.Size = new System.Drawing.Size(35, 13);
-            this.hiddenComLabel.TabIndex = 18;
-            this.hiddenComLabel.Text = "label4";
-            this.hiddenComLabel.Visible = false;
+            this.dispCalibYBox.Location = new System.Drawing.Point(143, 40);
+            this.dispCalibYBox.MaxLength = 2;
+            this.dispCalibYBox.Name = "dispCalibYBox";
+            this.dispCalibYBox.Size = new System.Drawing.Size(21, 20);
+            this.dispCalibYBox.TabIndex = 4;
             // 
-            // Form1
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(125, 44);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(12, 13);
+            this.label4.TabIndex = 5;
+            this.label4.Text = "x";
+            // 
+            // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1019, 632);
-            this.Controls.Add(this.hiddenComLabel);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.debugTextBox);
             this.Controls.Add(this.groupBox3);
@@ -431,7 +444,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "Form1";
+            this.Name = "MainWindow";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "RFGrid Tools";
@@ -470,7 +483,7 @@
         private System.Windows.Forms.Label connectedPortLabel;
         private System.Windows.Forms.Label portTextLabel;
         private System.Windows.Forms.Button displayInfoButton;
-        private System.Windows.Forms.TextBox dispCalibTextBox;
+        private System.Windows.Forms.TextBox dispCalibXBox;
         private System.Windows.Forms.Label gridSizeLabel;
         private System.Windows.Forms.Button dispCalibrateButton;
         private System.Windows.Forms.ToolStripMenuItem installModulesToolStripMenuItem;
@@ -484,7 +497,8 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button backgroundCalibButton;
         private System.Windows.Forms.Button tagGetIdButton;
-        private System.Windows.Forms.Label hiddenComLabel;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox dispCalibYBox;
     }
 }
 

@@ -48,7 +48,9 @@ namespace Tag_Scanner
             {
                 if (((String.IsNullOrEmpty((string)soundTextBox.Text))))
                     soundTextBox.Text = "none";
-                data = tagBox.Text + "," + imageTextBox.Text + "," + soundTextBox.Text;
+                string new_image_path = "./images/objects/" + Path.GetFileName(imageTextBox.Text);
+                string new_sound_path = "./sounds/" + Path.GetFileName(soundTextBox.Text);
+                data = "\n" + tagBox.Text + "," + new_image_path + "," + new_sound_path;
                 flag = true;
             }
             else System.Windows.Forms.MessageBox.Show("Tag ID or Image cannot be empty!","Error",MessageBoxButtons.OK,MessageBoxIcon.Error);
@@ -57,6 +59,8 @@ namespace Tag_Scanner
             {
                 //Need to agree on where to copy. but this works right now.
                 string configs_path = Directory.GetCurrentDirectory() + "\\python\\rfgridTools\\rfgridCalibration\\configs\\";
+                string objects_path = Directory.GetCurrentDirectory() + "\\python\\rfgridTools\\rfgridCalibration\\images\\objects\\";
+                string sounds_path = Directory.GetCurrentDirectory() + "\\python\\rfgridTools\\rfgridCalibration\\sounds\\";
                 string path = Directory.GetCurrentDirectory() + "\\python\\rfgridTools\\rfgridCalibration\\configs\\tags.rfgridtag";
                 if (Directory.Exists(configs_path))
                 {
@@ -91,11 +95,12 @@ namespace Tag_Scanner
 
                     }
                     if (soundTextBox.Text != "none")
-                        System.IO.File.Copy(soundTextBox.Text, configs_path + Path.GetFileName(soundTextBox.Text), true);
-                    System.IO.File.Copy(imageTextBox.Text, configs_path + Path.GetFileName(imageTextBox.Text), true);
+                        System.IO.File.Copy(soundTextBox.Text, sounds_path + Path.GetFileName(soundTextBox.Text), true);
+                    System.IO.File.Copy(imageTextBox.Text, objects_path + Path.GetFileName(imageTextBox.Text), true);
                     System.Windows.Forms.MessageBox.Show("Tag is sucessfully created.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
-                else System.Windows.Forms.MessageBox.Show("Make sure this executable is located in the rfgrid folder.", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                else System.Windows.Forms.MessageBox.Show("Make sure this executable is located in the rfgrid folder.",
+                    "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             }
         }
@@ -166,8 +171,8 @@ namespace Tag_Scanner
         private void DispCalibrateButton_Click(object sender, EventArgs e)
         {
             string filePath = Directory.GetCurrentDirectory() + "\\python\\rfgridTools\\rfgridCalibration\\rfgridDispCalib.py";
-            //debugTextBox.AppendText(Directory.GetCurrentDirectory());
-            run_cmd(filePath, dispCalibTextBox.Text);
+            string args = dispCalibXBox.Text + "x" + dispCalibYBox.Text;
+            run_cmd(filePath, args);
         }
 
 
@@ -193,9 +198,7 @@ namespace Tag_Scanner
 
         private void run_cmd(string cmd, string args)
         {
-            debugTextBox.AppendText("Wait for the process to finish..");
-            //string file = Directory.GetCurrentDirectory() + "\\setup\\modules.py";
-            //string fileName = Directory.GetCurrentDirectory() + @"\setup\modules.py";
+
             string result;
 
             System.Diagnostics.ProcessStartInfo start = new System.Diagnostics.ProcessStartInfo();
@@ -212,11 +215,9 @@ namespace Tag_Scanner
                 using (System.IO.StreamReader reader = process.StandardOutput)
                 {
                     string stderr = process.StandardError.ReadToEnd();
-                    debugTextBox.AppendText(stderr);
+                    debugTextBox.AppendText(">" + stderr + "\n");
                     result = reader.ReadToEnd();
-                    debugTextBox.AppendText(result);
-                    //Console.Write(result);
-                    process.WaitForExit();
+                    debugTextBox.AppendText(">" + result + "\n");
                 }
             }
         }
@@ -243,8 +244,18 @@ namespace Tag_Scanner
 
         private void BackgroundCalibButton_Click(object sender, EventArgs e)
         {
-            string filePath = Directory.GetCurrentDirectory() + "\\python\\rfgridTools\\rfgridCalibration\\rfgridBackgroundCalib.py";
-            run_cmd(filePath, Path.GetFileName(backgroundImgTextBox.Text));
+            if ((backgroundImgTextBox.Text != null) && (File.Exists(backgroundImgTextBox.Text)))
+            {
+                string backgrounds_path = Directory.GetCurrentDirectory() + "\\python\\rfgridTools\\rfgridCalibration\\images\\backgrounds\\";
+                string filePath = Directory.GetCurrentDirectory() + "\\python\\rfgridTools\\rfgridCalibration\\rfgridBackgroundCalib.py";
+                System.IO.File.Copy(backgroundImgTextBox.Text, backgrounds_path + Path.GetFileName(backgroundImgTextBox.Text), true);
+                run_cmd(filePath, Path.GetFileName(backgroundImgTextBox.Text));
+            }
+            else
+            {
+                System.Windows.Forms.MessageBox.Show("Please select an image.",
+                    "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void AboutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -265,18 +276,19 @@ namespace Tag_Scanner
             string data = "";
             if (portTextLabel.Text != "NA")
             {
-                
+
+                var sync = new byte[] { 0xFF, 0x01, System.Convert.ToByte(dispCalibXBox.Text), System.Convert.ToByte(dispCalibYBox.Text) };
                 string[] arr = portTextLabel.Text.Split(' ');
                 int index = arr.Length;
                 SerialPort serialPort = new SerialPort();
-                serialPort.PortName = arr[index - 1];
-                serialPort.BaudRate = 9600;
-                serialPort.DataBits = 8;
-                serialPort.Parity = Parity.None;
-                serialPort.StopBits = StopBits.One;
-                serialPort.ReadTimeout = 1000;
-                serialPort.Open();
-                data = (serialPort.ReadLine());
+                //serialPort.PortName = arr[index - 1];
+                //serialPort.BaudRate = 9600;
+                //serialPort.DataBits = 8;
+                //serialPort.Parity = Parity.None;
+                //serialPort.StopBits = StopBits.One;
+                //serialPort.ReadTimeout = 1000;
+                //serialPort.Open();
+                //data = (serialPort.ReadLine());
                 serialPort.DataReceived += new
      SerialDataReceivedEventHandler(port_DataReceived);
                 

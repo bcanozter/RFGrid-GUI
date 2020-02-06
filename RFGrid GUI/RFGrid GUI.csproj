@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{86748A6E-44C7-4E63-9901-7464703396D7}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Tag_Scanner</RootNamespace>
-    <AssemblyName>Tag Scanner</AssemblyName>
+    <RootNamespace>RFGrid_GUI</RootNamespace>
+    <AssemblyName>RFGrid GUI</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

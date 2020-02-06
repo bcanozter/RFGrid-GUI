@@ -83,7 +83,7 @@
             this.Controls.Add(this.PortList);
             this.Name = "AvailablePorts";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "AvailablePorts";
+            this.Text = "Available Ports";
             this.ResumeLayout(false);
             this.PerformLayout();
 
