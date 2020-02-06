@@ -19,7 +19,7 @@ namespace Tag_Scanner
         {
             //this.BackgroundImage = Properties.Resources.im; #disable until we find a better background image
             InitializeComponent();
-            int test = 123;
+            int test = 123; //I Changed this!!! 5:40
         }
 
 
