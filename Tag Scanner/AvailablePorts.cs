@@ -21,10 +21,10 @@ namespace Tag_Scanner
             InitializeComponent();
 
         }
-        private Form1 mainForm = null;
+        private MainWindow mainForm = null;
         public AvailablePorts(Form callingForm)
         {
-            mainForm = callingForm as Form1;
+            mainForm = callingForm as MainWindow;
             InitializeComponent();
         }
 
