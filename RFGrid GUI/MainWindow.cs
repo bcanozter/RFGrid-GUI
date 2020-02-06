@@ -273,22 +273,26 @@ namespace Tag_Scanner
 
         private void TagGetIdButton_Click(object sender, EventArgs e)
         {
-            string data = "";
-            if (portTextLabel.Text != "NA")
+            //string data = "";
+            int data = 0x00;
+            if (portTextLabel.Text == "NA")
             {
 
-                var sync = new byte[] { 0xFF, 0x01, System.Convert.ToByte(dispCalibXBox.Text), System.Convert.ToByte(dispCalibYBox.Text) };
+                var getid = new byte[] { 0x01, 0x02,0x03};
                 string[] arr = portTextLabel.Text.Split(' ');
                 int index = arr.Length;
                 SerialPort serialPort = new SerialPort();
-                //serialPort.PortName = arr[index - 1];
-                //serialPort.BaudRate = 9600;
-                //serialPort.DataBits = 8;
-                //serialPort.Parity = Parity.None;
-                //serialPort.StopBits = StopBits.One;
-                //serialPort.ReadTimeout = 1000;
-                //serialPort.Open();
-                //data = (serialPort.ReadLine());
+                serialPort.PortName = "COM3";
+                    //arr[index - 1];
+                serialPort.BaudRate = 9600;
+                serialPort.DataBits = 8;
+                serialPort.Parity = Parity.None;
+                serialPort.StopBits = StopBits.One;
+               // serialPort.ReadTimeout = 10000;
+                serialPort.Open();
+                serialPort.Write(getid,0,3);
+                data = (serialPort.ReadByte());
+                debugTextBox.AppendText(serialPort.ReadByte().ToString());
                 serialPort.DataReceived += new
      SerialDataReceivedEventHandler(port_DataReceived);
                 
@@ -304,6 +308,8 @@ namespace Tag_Scanner
             this.Invoke((MethodInvoker)delegate
             {
                 tagBox.Text = sp.ReadExisting();
+                //debugTextBox.Text = ((sp.ReadExisting()).ToString());
+        
             });
             sp.Close();
         }
