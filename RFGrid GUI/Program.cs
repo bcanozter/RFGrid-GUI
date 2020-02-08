@@ -9,7 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Tag_Scanner
+namespace RFGrid_GUI
 {
     static class Program
     {

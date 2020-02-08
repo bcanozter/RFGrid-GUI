@@ -10,7 +10,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Tag_Scanner
+
+namespace RFGrid_GUI
 {
     public partial class MainWindow : Form
     {
@@ -275,32 +276,40 @@ namespace Tag_Scanner
         {
             //string data = "";
             int data = 0x00;
-            if (portTextLabel.Text == "NA")
+            var sync = new byte[] {0xFF, 0x01, 0x08,0x08}; //SYNC CMD= 0xFF , START BYTE= 0x01, XMAX = 0x08, YMAX = 0x08
+            Console.WriteLine(sync.Length);
+
+            
+            if (portTextLabel.Text != "NA")
             {
 
-                var getid = new byte[] { 0x01, 0x02,0x03};
                 string[] arr = portTextLabel.Text.Split(' ');
                 int index = arr.Length;
+                /* Initialize set-up here*/
                 SerialPort serialPort = new SerialPort();
-                serialPort.PortName = "COM3";
-                    //arr[index - 1];
+                serialPort.PortName = arr[index - 1];
                 serialPort.BaudRate = 9600;
                 serialPort.DataBits = 8;
                 serialPort.Parity = Parity.None;
                 serialPort.StopBits = StopBits.One;
                // serialPort.ReadTimeout = 10000;
                 serialPort.Open();
-                serialPort.Write(getid,0,3);
-                data = (serialPort.ReadByte());
-                debugTextBox.AppendText(serialPort.ReadByte().ToString());
+
+                Sync(serialPort);
+                getID(serialPort);
+
+                /*
                 serialPort.DataReceived += new
      SerialDataReceivedEventHandler(port_DataReceived);
-                
+                */
+
+            
 
             }
 
         }
 
+        /*
         private void port_DataReceived(object sender,
                                  SerialDataReceivedEventArgs e)
         {
@@ -314,8 +323,59 @@ namespace Tag_Scanner
             sp.Close();
         }
 
+        */
+
+        private void Sync(SerialPort serialPort){
+            //send sync here..
+            int deviceSyncCmd = 0x0F;
+            byte[] data = new byte[10]; //idk 10 for now.
+            var sync = new byte[] {0xFF, 0x01, 0x08,0x08}; //SYNC CMD= 0xFF , START BYTE= 0x01, XMAX = 0x08, YMAX = 0x08
+            serialPort.Write(sync,0,sync.Length);
+            bool synced = false;
+            while (!synced)
+            {
+                serialPort.Read(data, 0, 4);
+                if(data[0] == deviceSyncCmd)
+                {
+                    //read...
+
+                    synced = true;
+                }
+            }
+  
+
+        }
+
+        private void getID(SerialPort serialPort)
+        {
+            byte[] data = new byte[10]; //idk 10 for now.
+            var getIDRequest = new byte[] { 0xF1, 0x00, 0x00 };
+            serialPort.Write(getIDRequest, 0, getIDRequest.Length);
+            while (true)
+            {
+                serialPort.Read(data, 0, 4);
+                if (data[0] == 0x01) //0x01 getid response from device
+                {
+                    //read...
+                    tagBox.Text = data[1].ToString();
+                    break;
+                }
+
+            }
+        }
+
+        private void ApplicationsRefreshButton_Click(object sender, EventArgs e)
+        {
+            ApplicationsList.Items.Clear();
+            string applications_path = Directory.GetCurrentDirectory() + "\\python\\rfgridTools\\rfgridCalibration\\";
+            string[] files = Directory.GetFiles(applications_path,"*.py");
+            foreach(string fileName in files)
+            {
+                ApplicationsList.Items.Add(Path.GetFileName(fileName));
+            }
 
 
+        }
     }
 
 }

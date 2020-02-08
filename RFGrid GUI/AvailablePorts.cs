@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using System.IO.Ports;
 using System.Management;
 
-namespace Tag_Scanner
+namespace RFGrid_GUI
 {
     public partial class AvailablePorts : Form
     {

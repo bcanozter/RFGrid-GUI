@@ -1,4 +1,4 @@
-﻿namespace Tag_Scanner
+﻿namespace RFGrid_GUI
 {
     partial class AvailablePorts
     {

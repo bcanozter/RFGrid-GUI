@@ -1,4 +1,4 @@
-﻿namespace Tag_Scanner
+﻿namespace RFGrid_GUI
 {
     partial class MainWindow
     {
@@ -51,6 +51,9 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tagGetIdButton = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.YLabel = new System.Windows.Forms.Label();
+            this.XLabel = new System.Windows.Forms.Label();
+            this.dispCalibYBox = new System.Windows.Forms.TextBox();
             this.dispCalibrateButton = new System.Windows.Forms.Button();
             this.displayInfoButton = new System.Windows.Forms.Button();
             this.dispCalibXBox = new System.Windows.Forms.TextBox();
@@ -64,12 +67,15 @@
             this.label2 = new System.Windows.Forms.Label();
             this.debugTextBox = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.dispCalibYBox = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
+            this.ApplicationsGroupBox = new System.Windows.Forms.GroupBox();
+            this.ApplicationsRefreshButton = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.ApplicationsList = new System.Windows.Forms.ListBox();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.ApplicationsGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // tagLabel
@@ -268,7 +274,8 @@
             // groupBox2
             // 
             this.groupBox2.BackColor = System.Drawing.Color.Transparent;
-            this.groupBox2.Controls.Add(this.label4);
+            this.groupBox2.Controls.Add(this.YLabel);
+            this.groupBox2.Controls.Add(this.XLabel);
             this.groupBox2.Controls.Add(this.dispCalibYBox);
             this.groupBox2.Controls.Add(this.dispCalibrateButton);
             this.groupBox2.Controls.Add(this.displayInfoButton);
@@ -280,6 +287,32 @@
             this.groupBox2.TabIndex = 12;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Display Calibration";
+            // 
+            // YLabel
+            // 
+            this.YLabel.AutoSize = true;
+            this.YLabel.Location = new System.Drawing.Point(105, 94);
+            this.YLabel.Name = "YLabel";
+            this.YLabel.Size = new System.Drawing.Size(20, 13);
+            this.YLabel.TabIndex = 6;
+            this.YLabel.Text = "Y :";
+            // 
+            // XLabel
+            // 
+            this.XLabel.AutoSize = true;
+            this.XLabel.Location = new System.Drawing.Point(105, 64);
+            this.XLabel.Name = "XLabel";
+            this.XLabel.Size = new System.Drawing.Size(20, 13);
+            this.XLabel.TabIndex = 5;
+            this.XLabel.Text = "X :";
+            // 
+            // dispCalibYBox
+            // 
+            this.dispCalibYBox.Location = new System.Drawing.Point(152, 91);
+            this.dispCalibYBox.MaxLength = 2;
+            this.dispCalibYBox.Name = "dispCalibYBox";
+            this.dispCalibYBox.Size = new System.Drawing.Size(21, 20);
+            this.dispCalibYBox.TabIndex = 4;
             // 
             // dispCalibrateButton
             // 
@@ -293,7 +326,7 @@
             // 
             // displayInfoButton
             // 
-            this.displayInfoButton.Location = new System.Drawing.Point(185, 37);
+            this.displayInfoButton.Location = new System.Drawing.Point(213, 35);
             this.displayInfoButton.Name = "displayInfoButton";
             this.displayInfoButton.Size = new System.Drawing.Size(22, 23);
             this.displayInfoButton.TabIndex = 2;
@@ -303,7 +336,7 @@
             // 
             // dispCalibXBox
             // 
-            this.dispCalibXBox.Location = new System.Drawing.Point(98, 40);
+            this.dispCalibXBox.Location = new System.Drawing.Point(152, 61);
             this.dispCalibXBox.MaxLength = 2;
             this.dispCalibXBox.Name = "dispCalibXBox";
             this.dispCalibXBox.Size = new System.Drawing.Size(21, 20);
@@ -313,11 +346,11 @@
             // 
             this.gridSizeLabel.AutoSize = true;
             this.gridSizeLabel.Font = new System.Drawing.Font("Verdana", 11F);
-            this.gridSizeLabel.Location = new System.Drawing.Point(6, 40);
+            this.gridSizeLabel.Location = new System.Drawing.Point(79, 35);
             this.gridSizeLabel.Name = "gridSizeLabel";
-            this.gridSizeLabel.Size = new System.Drawing.Size(81, 18);
+            this.gridSizeLabel.Size = new System.Drawing.Size(128, 18);
             this.gridSizeLabel.TabIndex = 0;
-            this.gridSizeLabel.Text = "Grid Size:";
+            this.gridSizeLabel.Text = "Grid Dimensions";
             // 
             // connectedPortLabel
             // 
@@ -408,22 +441,44 @@
             this.label3.TabIndex = 17;
             this.label3.Text = "Output";
             // 
-            // dispCalibYBox
+            // ApplicationsGroupBox
             // 
-            this.dispCalibYBox.Location = new System.Drawing.Point(143, 40);
-            this.dispCalibYBox.MaxLength = 2;
-            this.dispCalibYBox.Name = "dispCalibYBox";
-            this.dispCalibYBox.Size = new System.Drawing.Size(21, 20);
-            this.dispCalibYBox.TabIndex = 4;
+            this.ApplicationsGroupBox.Controls.Add(this.ApplicationsRefreshButton);
+            this.ApplicationsGroupBox.Controls.Add(this.button1);
+            this.ApplicationsGroupBox.Controls.Add(this.ApplicationsList);
+            this.ApplicationsGroupBox.Location = new System.Drawing.Point(12, 240);
+            this.ApplicationsGroupBox.Name = "ApplicationsGroupBox";
+            this.ApplicationsGroupBox.Size = new System.Drawing.Size(361, 170);
+            this.ApplicationsGroupBox.TabIndex = 18;
+            this.ApplicationsGroupBox.TabStop = false;
+            this.ApplicationsGroupBox.Text = "Applications";
             // 
-            // label4
+            // ApplicationsRefreshButton
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(125, 44);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(12, 13);
-            this.label4.TabIndex = 5;
-            this.label4.Text = "x";
+            this.ApplicationsRefreshButton.Location = new System.Drawing.Point(255, 45);
+            this.ApplicationsRefreshButton.Name = "ApplicationsRefreshButton";
+            this.ApplicationsRefreshButton.Size = new System.Drawing.Size(75, 23);
+            this.ApplicationsRefreshButton.TabIndex = 2;
+            this.ApplicationsRefreshButton.Text = "Refresh";
+            this.ApplicationsRefreshButton.UseVisualStyleBackColor = true;
+            this.ApplicationsRefreshButton.Click += new System.EventHandler(this.ApplicationsRefreshButton_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(255, 101);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 1;
+            this.button1.Text = "Launch";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // ApplicationsList
+            // 
+            this.ApplicationsList.FormattingEnabled = true;
+            this.ApplicationsList.Location = new System.Drawing.Point(9, 19);
+            this.ApplicationsList.Name = "ApplicationsList";
+            this.ApplicationsList.Size = new System.Drawing.Size(221, 134);
+            this.ApplicationsList.TabIndex = 0;
             // 
             // MainWindow
             // 
@@ -432,6 +487,7 @@
             this.AutoSize = true;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1019, 632);
+            this.Controls.Add(this.ApplicationsGroupBox);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.debugTextBox);
             this.Controls.Add(this.groupBox3);
@@ -456,6 +512,7 @@
             this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            this.ApplicationsGroupBox.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -497,8 +554,13 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button backgroundCalibButton;
         private System.Windows.Forms.Button tagGetIdButton;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox dispCalibYBox;
+        private System.Windows.Forms.Label YLabel;
+        private System.Windows.Forms.Label XLabel;
+        private System.Windows.Forms.GroupBox ApplicationsGroupBox;
+        private System.Windows.Forms.Button ApplicationsRefreshButton;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ListBox ApplicationsList;
     }
 }
 
