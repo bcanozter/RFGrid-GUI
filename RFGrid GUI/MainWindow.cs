@@ -272,16 +272,16 @@ namespace RFGrid_GUI
         }
 
 
+
+        const int RX_UPDATE = 0x00;
+        const int RX_SYNC = 0x0F;
         private void TagGetIdButton_Click(object sender, EventArgs e)
         {
-            //string data = "";
-            int data = 0x00;
-            var sync = new byte[] {0xFF, 0x01, 0x08,0x08}; //SYNC CMD= 0xFF , START BYTE= 0x01, XMAX = 0x08, YMAX = 0x08
-            Console.WriteLine(sync.Length);
 
-            
             if (portTextLabel.Text != "NA")
             {
+
+
 
                 string[] arr = portTextLabel.Text.Split(' ');
                 int index = arr.Length;
@@ -292,77 +292,88 @@ namespace RFGrid_GUI
                 serialPort.DataBits = 8;
                 serialPort.Parity = Parity.None;
                 serialPort.StopBits = StopBits.One;
-               // serialPort.ReadTimeout = 10000;
+                serialPort.RtsEnable = false;
+                serialPort.DtrEnable = false;
+                
                 serialPort.Open();
+                serialPort.DiscardInBuffer();
+                serialPort.DiscardOutBuffer();
+                TX_Sync(serialPort);
 
-                Sync(serialPort);
-                getID(serialPort);
 
-                /*
                 serialPort.DataReceived += new
      SerialDataReceivedEventHandler(port_DataReceived);
-                */
-
-            
 
             }
 
         }
 
-        /*
+       
         private void port_DataReceived(object sender,
                                  SerialDataReceivedEventArgs e)
         {
+
             SerialPort sp = (SerialPort)sender;
+
             this.Invoke((MethodInvoker)delegate
             {
-                tagBox.Text = sp.ReadExisting();
-                //debugTextBox.Text = ((sp.ReadExisting()).ToString());
+                byte[] cmd = new byte[1];
+                byte[] args = new byte[6];
+                
+                sp.Read(cmd, 0,1); //READ ONE BYTE
+                System.Threading.Thread.Sleep(50);
+                switch (cmd[0])
+                {
+                    case RX_SYNC:
+                        sp.Read(args, 0, 3);
+                        //debugTextBox.AppendText("\nSynced.");
+                        if (args[0] == 0)
+                        {
+                            //Resync here
+                        }
+                        System.Threading.Thread.Sleep(50);
+                        break;
+                    case RX_UPDATE:
+                        //debugTextBox.AppendText("\nUpdate Received.");
+                        sp.Read(args, 0, 6);
+                        byte[] idBytes = new byte[4];
+                        idBytes[3] = args[0];
+                        idBytes[2] = args[1];
+                        idBytes[1] = args[2];
+                        idBytes[0] = args[3];
+                        UInt32 tagID = BitConverter.ToUInt32(idBytes, 0);
+                        if ((args[4] == 0x00) && (args[5] == 0x00) && (tagID != 0)) {
+                            tagBox.Text = tagID.ToString();
+                            }
+
+                        byte[] TX_UPDATE = new byte[7];
+                        TX_UPDATE[0] = 0xF0;
+                        TX_UPDATE[1] = args[0];
+                        TX_UPDATE[2] = args[1];
+                        TX_UPDATE[3] = args[2];
+                        TX_UPDATE[4] = args[3];
+                        TX_UPDATE[5] = args[4];
+                        TX_UPDATE[6] = args[5];
+                        sp.Write(TX_UPDATE, 0, 7);
+                        System.Threading.Thread.Sleep(50);
+                        break;
+
+
+                }
         
             });
-            sp.Close();
+            System.Threading.Thread.Sleep(150);
+
         }
 
-        */
-
-        private void Sync(SerialPort serialPort){
-            //send sync here..
-            int deviceSyncCmd = 0x0F;
-            byte[] data = new byte[10]; //idk 10 for now.
-            var sync = new byte[] {0xFF, 0x01, 0x08,0x08}; //SYNC CMD= 0xFF , START BYTE= 0x01, XMAX = 0x08, YMAX = 0x08
-            serialPort.Write(sync,0,sync.Length);
-            bool synced = false;
-            while (!synced)
-            {
-                serialPort.Read(data, 0, 4);
-                if(data[0] == deviceSyncCmd)
-                {
-                    //read...
-
-                    synced = true;
-                }
-            }
   
 
+        private void TX_Sync(SerialPort serialPort){
+            //send sync here..
+            var sync = new byte[] {0xFF, 0x01, 0x08,0x08}; //SYNC CMD= 0xFF , START BYTE= 0x01, XMAX = 0x08, YMAX = 0x08
+            serialPort.Write(sync,0,sync.Length);
         }
 
-        private void getID(SerialPort serialPort)
-        {
-            byte[] data = new byte[10]; //idk 10 for now.
-            var getIDRequest = new byte[] { 0xF1, 0x00, 0x00 };
-            serialPort.Write(getIDRequest, 0, getIDRequest.Length);
-            while (true)
-            {
-                serialPort.Read(data, 0, 4);
-                if (data[0] == 0x01) //0x01 getid response from device
-                {
-                    //read...
-                    tagBox.Text = data[1].ToString();
-                    break;
-                }
-
-            }
-        }
 
         private void ApplicationsRefreshButton_Click(object sender, EventArgs e)
         {
