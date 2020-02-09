@@ -15,11 +15,12 @@ namespace RFGrid_GUI
 {
     public partial class MainWindow : Form
     {
-  
+        string selectedGameGlobal = "";
         public MainWindow()
         {
             //this.BackgroundImage = Properties.Resources.im; #disable until we find a better background image
             InitializeComponent();
+            
         }
 
 
@@ -59,10 +60,10 @@ namespace RFGrid_GUI
             if (flag)
             {
                 //Need to agree on where to copy. but this works right now.
-                string configs_path = Directory.GetCurrentDirectory() + "\\python\\rfgridTools\\rfgridCalibration\\configs\\";
-                string objects_path = Directory.GetCurrentDirectory() + "\\python\\rfgridTools\\rfgridCalibration\\images\\objects\\";
-                string sounds_path = Directory.GetCurrentDirectory() + "\\python\\rfgridTools\\rfgridCalibration\\sounds\\";
-                string path = Directory.GetCurrentDirectory() + "\\python\\rfgridTools\\rfgridCalibration\\configs\\tags.rfgridtag";
+                string configs_path = Directory.GetCurrentDirectory() + "\\applications\\" + selectedGameGlobal + "\\configs\\";
+                string objects_path = Directory.GetCurrentDirectory() + "\\applications\\" + selectedGameGlobal + "\\images\\objects\\";
+                string sounds_path = Directory.GetCurrentDirectory() + "\\applications\\" + selectedGameGlobal+ "\\sounds\\";
+                string path = Directory.GetCurrentDirectory() + "\\applications" + selectedGameGlobal + "\\configs\\tags.rfgridtag";
                 if (Directory.Exists(configs_path))
                 {
                     if (File.Exists(path))
@@ -128,23 +129,6 @@ namespace RFGrid_GUI
             }
         }
 
-        static void replaceLine(string ID,string newText,string fileName, int lineIndex)
-        {
-            string[] arrLine = System.IO.File.ReadAllLines(fileName);
-            string[] IDs = new string[] { };
-            for(var i = 0; i< arrLine.Length; i += 1)
-            {
-                var line = arrLine[i];
-  
-                IDs = line.Split(',');
-                if(IDs[0] == ID)
-                {
-                    arrLine[i] = ID;
-                }
-                System.IO.File.AppendAllText(Directory.GetCurrentDirectory() + "\\debug.txt", IDs[0] + Environment.NewLine);
-
-            }
-        }
 
         private void ToolStripMenuItem1_Click(object sender, EventArgs e)
         {
@@ -171,7 +155,7 @@ namespace RFGrid_GUI
 
         private void DispCalibrateButton_Click(object sender, EventArgs e)
         {
-            string filePath = Directory.GetCurrentDirectory() + "\\python\\rfgridTools\\rfgridCalibration\\rfgridDispCalib.py";
+            string filePath = Directory.GetCurrentDirectory() + "\\applications\\" + selectedGameGlobal+ "\\rfgridDispCalib.py";
             string args = dispCalibXBox.Text + "x" + dispCalibYBox.Text;
             run_cmd(filePath, args);
         }
@@ -205,7 +189,8 @@ namespace RFGrid_GUI
             System.Diagnostics.ProcessStartInfo start = new System.Diagnostics.ProcessStartInfo();
             start.FileName = System.AppDomain.CurrentDomain.BaseDirectory + @"python\python-3.7.6\python.exe";
             //@"C:\python27\python.exe";
-
+            args = selectedGameGlobal + " " + args;
+            debugTextBox.AppendText(args);
             start.Arguments = string.Format(@"""{0}"" {1}", cmd, args);
             start.UseShellExecute = false;
             start.RedirectStandardOutput = true;
@@ -233,7 +218,7 @@ namespace RFGrid_GUI
             OpenFileDialog openFileDialog1 = new OpenFileDialog()
             {
                 FileName = "Select an image file",
-                Filter = "Image files (*.png)|*.png",
+                Filter = "Image files (*.jpg)|*.jpg",
                 Title = "Choose image file"
             };
 
@@ -247,9 +232,9 @@ namespace RFGrid_GUI
         {
             if ((backgroundImgTextBox.Text != null) && (File.Exists(backgroundImgTextBox.Text)))
             {
-                string backgrounds_path = Directory.GetCurrentDirectory() + "\\python\\rfgridTools\\rfgridCalibration\\images\\backgrounds\\";
-                string filePath = Directory.GetCurrentDirectory() + "\\python\\rfgridTools\\rfgridCalibration\\rfgridBackgroundCalib.py";
-                System.IO.File.Copy(backgroundImgTextBox.Text, backgrounds_path + Path.GetFileName(backgroundImgTextBox.Text), true);
+                string backgrounds_path = Directory.GetCurrentDirectory() + "\\applications\\" + selectedGameGlobal+ "\\images\\backgrounds\\";
+                string filePath = Directory.GetCurrentDirectory() + "\\applications\\" +  selectedGameGlobal+ "\\rfgridBackgroundCalib.py";
+                System.IO.File.Copy(backgroundImgTextBox.Text, backgrounds_path + "default.jpg", true);
                 run_cmd(filePath, Path.GetFileName(backgroundImgTextBox.Text));
             }
             else
@@ -378,14 +363,103 @@ namespace RFGrid_GUI
         private void ApplicationsRefreshButton_Click(object sender, EventArgs e)
         {
             ApplicationsList.Items.Clear();
-            string applications_path = Directory.GetCurrentDirectory() + "\\python\\rfgridTools\\rfgridCalibration\\";
-            string[] files = Directory.GetFiles(applications_path,"*.py");
+            string applications_path = Directory.GetCurrentDirectory() + "\\applications";
+            string[] files = Directory.GetDirectories(applications_path);
             foreach(string fileName in files)
             {
                 ApplicationsList.Items.Add(Path.GetFileName(fileName));
             }
 
 
+        }
+
+        private void createNewApplicationButton_Click(object sender, EventArgs e)
+        {
+           string sourceFolder = (Directory.GetCurrentDirectory() + @"\applications\defaultAssets\");
+           string newFolderPath = Directory.GetCurrentDirectory() + @"\applications\" + applicationFolderTextBox.Text;
+           if (applicationFolderTextBox.Text != null)
+           {
+                if (!Directory.Exists(newFolderPath))
+                {
+                    System.IO.Directory.CreateDirectory(newFolderPath);
+                    if (Directory.Exists(sourceFolder))
+                    {
+
+                        DirectoryCopy(sourceFolder, newFolderPath);
+                        System.IO.File.Move((Directory.GetCurrentDirectory() + @"\applications\" + applicationFolderTextBox.Text + @"\rfgridGame.py"),
+                            (Directory.GetCurrentDirectory() + @"\applications\" + applicationFolderTextBox.Text + @"\" + applicationFolderTextBox.Text + ".py"));
+                        string info = "New game folder sucessfully created!";
+                        System.Windows.Forms.MessageBox.Show(info, "About", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        string info = "Make sure defaultAssetsfolder is located in applications folder.";
+                        System.Windows.Forms.MessageBox.Show(info, "About", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    }
+                }
+                else
+                {
+                    System.Windows.Forms.MessageBox.Show("Game folder already exists.", "About", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                }
+
+
+            }
+
+
+        }
+
+
+        private void DirectoryCopy(string sourceFolder,string destination)
+            {
+
+            DirectoryInfo dir = new DirectoryInfo(sourceFolder);
+            DirectoryInfo[] dirs = dir.GetDirectories();
+
+            // If the destination directory doesn't exist, create it.
+            if (!Directory.Exists(destination))
+            {
+                Directory.CreateDirectory(destination);
+            }
+
+
+            FileInfo[] files = dir.GetFiles();
+            foreach (FileInfo file in files)
+            {
+                string temppath = Path.Combine(destination, file.Name);
+                file.CopyTo(temppath,true);
+            }
+
+            // If copying subdirectories, copy them and their contents to new location.
+            foreach (DirectoryInfo subdir in dirs)
+            {
+                string temppath = Path.Combine(destination, subdir.Name);
+                DirectoryCopy(subdir.FullName, temppath);
+            }
+
+        }
+
+        
+        private void openExistingApplicationButton_Click(object sender, EventArgs e)
+        {
+            string folderName = "";
+            FolderBrowserDialog folderBrowserDialog1 = new FolderBrowserDialog();
+            folderBrowserDialog1.RootFolder = Environment.SpecialFolder.Desktop;
+            folderBrowserDialog1.SelectedPath = Directory.GetCurrentDirectory() + @"\applications";
+            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
+            {
+                folderName = Path.GetFileName(folderBrowserDialog1.SelectedPath);
+                applicationFolderTextBox.Text = folderName;
+                selectedGameGlobal = folderName;
+
+            }
+        }
+
+        private void applicationLaunchButton_click(object sender, EventArgs e)
+        {
+            string gamePath = Directory.GetCurrentDirectory() + @"\applications" + selectedGameGlobal + @"\" + selectedGameGlobal + ".py";
+            run_cmd(gamePath, null);
         }
     }
 

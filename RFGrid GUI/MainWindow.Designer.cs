@@ -40,13 +40,6 @@
             this.clearButton = new System.Windows.Forms.Button();
             this.soundTextBox = new System.Windows.Forms.TextBox();
             this.soundButton = new System.Windows.Forms.Button();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.chooseCOMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.installModulesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tagGetIdButton = new System.Windows.Forms.Button();
@@ -69,13 +62,26 @@
             this.label3 = new System.Windows.Forms.Label();
             this.ApplicationsGroupBox = new System.Windows.Forms.GroupBox();
             this.ApplicationsRefreshButton = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.applicationLaunchButton = new System.Windows.Forms.Button();
             this.ApplicationsList = new System.Windows.Forms.ListBox();
-            this.menuStrip1.SuspendLayout();
+            this.applicationFolderTextBox = new System.Windows.Forms.TextBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.createNewApplicationButton = new System.Windows.Forms.Button();
+            this.openExistingApplicationButton = new System.Windows.Forms.Button();
+            this.applicationFormNameLabel = new System.Windows.Forms.Label();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.chooseCOMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.installModulesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.ApplicationsGroupBox.SuspendLayout();
+            this.groupBox4.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tagLabel
@@ -182,64 +188,6 @@
             this.soundButton.UseVisualStyleBackColor = true;
             this.soundButton.Click += new System.EventHandler(this.SoundButton_Click);
             // 
-            // menuStrip1
-            // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem1,
-            this.settingsToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1019, 24);
-            this.menuStrip1.TabIndex = 10;
-            this.menuStrip1.Text = "menuStrip1";
-            // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.aboutToolStripMenuItem,
-            this.exitToolStripMenuItem});
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(50, 20);
-            this.toolStripMenuItem1.Text = "Menu";
-            this.toolStripMenuItem1.Click += new System.EventHandler(this.ToolStripMenuItem1_Click);
-            // 
-            // aboutToolStripMenuItem
-            // 
-            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
-            this.aboutToolStripMenuItem.Text = "About";
-            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.AboutToolStripMenuItem_Click);
-            // 
-            // exitToolStripMenuItem
-            // 
-            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
-            this.exitToolStripMenuItem.Text = "Exit";
-            this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
-            // 
-            // settingsToolStripMenuItem
-            // 
-            this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.chooseCOMToolStripMenuItem,
-            this.installModulesToolStripMenuItem});
-            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
-            this.settingsToolStripMenuItem.Text = "Settings";
-            // 
-            // chooseCOMToolStripMenuItem
-            // 
-            this.chooseCOMToolStripMenuItem.Name = "chooseCOMToolStripMenuItem";
-            this.chooseCOMToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
-            this.chooseCOMToolStripMenuItem.Text = "Select Connection Port";
-            this.chooseCOMToolStripMenuItem.Click += new System.EventHandler(this.ChooseCOMToolStripMenuItem_Click);
-            // 
-            // installModulesToolStripMenuItem
-            // 
-            this.installModulesToolStripMenuItem.Name = "installModulesToolStripMenuItem";
-            this.installModulesToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
-            this.installModulesToolStripMenuItem.Text = "Install Modules";
-            this.installModulesToolStripMenuItem.Click += new System.EventHandler(this.InstallModulesToolStripMenuItem_Click);
-            // 
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.Transparent;
@@ -254,9 +202,9 @@
             this.groupBox1.Controls.Add(this.saveButton);
             this.groupBox1.Controls.Add(this.imageTextBox);
             this.groupBox1.Controls.Add(this.imageButton);
-            this.groupBox1.Location = new System.Drawing.Point(12, 41);
+            this.groupBox1.Location = new System.Drawing.Point(18, 240);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(361, 193);
+            this.groupBox1.Size = new System.Drawing.Size(355, 193);
             this.groupBox1.TabIndex = 11;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Tag Creator";
@@ -424,18 +372,18 @@
             // debugTextBox
             // 
             this.debugTextBox.BackColor = System.Drawing.Color.White;
-            this.debugTextBox.Location = new System.Drawing.Point(12, 439);
+            this.debugTextBox.Location = new System.Drawing.Point(12, 492);
             this.debugTextBox.Multiline = true;
             this.debugTextBox.Name = "debugTextBox";
             this.debugTextBox.ReadOnly = true;
             this.debugTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.debugTextBox.Size = new System.Drawing.Size(585, 121);
+            this.debugTextBox.Size = new System.Drawing.Size(585, 68);
             this.debugTextBox.TabIndex = 16;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(18, 413);
+            this.label3.Location = new System.Drawing.Point(18, 465);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(39, 13);
             this.label3.TabIndex = 17;
@@ -444,18 +392,18 @@
             // ApplicationsGroupBox
             // 
             this.ApplicationsGroupBox.Controls.Add(this.ApplicationsRefreshButton);
-            this.ApplicationsGroupBox.Controls.Add(this.button1);
+            this.ApplicationsGroupBox.Controls.Add(this.applicationLaunchButton);
             this.ApplicationsGroupBox.Controls.Add(this.ApplicationsList);
-            this.ApplicationsGroupBox.Location = new System.Drawing.Point(12, 240);
+            this.ApplicationsGroupBox.Location = new System.Drawing.Point(390, 244);
             this.ApplicationsGroupBox.Name = "ApplicationsGroupBox";
-            this.ApplicationsGroupBox.Size = new System.Drawing.Size(361, 170);
+            this.ApplicationsGroupBox.Size = new System.Drawing.Size(361, 189);
             this.ApplicationsGroupBox.TabIndex = 18;
             this.ApplicationsGroupBox.TabStop = false;
             this.ApplicationsGroupBox.Text = "Applications";
             // 
             // ApplicationsRefreshButton
             // 
-            this.ApplicationsRefreshButton.Location = new System.Drawing.Point(255, 45);
+            this.ApplicationsRefreshButton.Location = new System.Drawing.Point(255, 72);
             this.ApplicationsRefreshButton.Name = "ApplicationsRefreshButton";
             this.ApplicationsRefreshButton.Size = new System.Drawing.Size(75, 23);
             this.ApplicationsRefreshButton.TabIndex = 2;
@@ -463,22 +411,131 @@
             this.ApplicationsRefreshButton.UseVisualStyleBackColor = true;
             this.ApplicationsRefreshButton.Click += new System.EventHandler(this.ApplicationsRefreshButton_Click);
             // 
-            // button1
+            // applicationLaunchButton
             // 
-            this.button1.Location = new System.Drawing.Point(255, 101);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "Launch";
-            this.button1.UseVisualStyleBackColor = true;
+            this.applicationLaunchButton.Location = new System.Drawing.Point(255, 133);
+            this.applicationLaunchButton.Name = "applicationLaunchButton";
+            this.applicationLaunchButton.Size = new System.Drawing.Size(75, 23);
+            this.applicationLaunchButton.TabIndex = 1;
+            this.applicationLaunchButton.Text = "Launch";
+            this.applicationLaunchButton.UseVisualStyleBackColor = true;
+            this.applicationLaunchButton.Click += new System.EventHandler(this.applicationLaunchButton_click);
             // 
             // ApplicationsList
             // 
             this.ApplicationsList.FormattingEnabled = true;
             this.ApplicationsList.Location = new System.Drawing.Point(9, 19);
             this.ApplicationsList.Name = "ApplicationsList";
-            this.ApplicationsList.Size = new System.Drawing.Size(221, 134);
+            this.ApplicationsList.Size = new System.Drawing.Size(221, 160);
             this.ApplicationsList.TabIndex = 0;
+            // 
+            // applicationFolderTextBox
+            // 
+            this.applicationFolderTextBox.Location = new System.Drawing.Point(9, 64);
+            this.applicationFolderTextBox.Name = "applicationFolderTextBox";
+            this.applicationFolderTextBox.Size = new System.Drawing.Size(167, 20);
+            this.applicationFolderTextBox.TabIndex = 19;
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.createNewApplicationButton);
+            this.groupBox4.Controls.Add(this.openExistingApplicationButton);
+            this.groupBox4.Controls.Add(this.applicationFormNameLabel);
+            this.groupBox4.Controls.Add(this.applicationFolderTextBox);
+            this.groupBox4.Location = new System.Drawing.Point(18, 41);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(355, 193);
+            this.groupBox4.TabIndex = 20;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Application Form";
+            // 
+            // createNewApplicationButton
+            // 
+            this.createNewApplicationButton.Location = new System.Drawing.Point(182, 151);
+            this.createNewApplicationButton.Name = "createNewApplicationButton";
+            this.createNewApplicationButton.Size = new System.Drawing.Size(100, 23);
+            this.createNewApplicationButton.TabIndex = 22;
+            this.createNewApplicationButton.Text = "Create New";
+            this.createNewApplicationButton.UseVisualStyleBackColor = true;
+            this.createNewApplicationButton.Click += new System.EventHandler(this.createNewApplicationButton_Click);
+            // 
+            // openExistingApplicationButton
+            // 
+            this.openExistingApplicationButton.Location = new System.Drawing.Point(48, 151);
+            this.openExistingApplicationButton.Name = "openExistingApplicationButton";
+            this.openExistingApplicationButton.Size = new System.Drawing.Size(100, 23);
+            this.openExistingApplicationButton.TabIndex = 21;
+            this.openExistingApplicationButton.Text = "Choose Existing";
+            this.openExistingApplicationButton.UseVisualStyleBackColor = true;
+            this.openExistingApplicationButton.Click += new System.EventHandler(this.openExistingApplicationButton_Click);
+            // 
+            // applicationFormNameLabel
+            // 
+            this.applicationFormNameLabel.AutoSize = true;
+            this.applicationFormNameLabel.Font = new System.Drawing.Font("Verdana", 11F);
+            this.applicationFormNameLabel.Location = new System.Drawing.Point(6, 35);
+            this.applicationFormNameLabel.Name = "applicationFormNameLabel";
+            this.applicationFormNameLabel.Size = new System.Drawing.Size(52, 18);
+            this.applicationFormNameLabel.TabIndex = 20;
+            this.applicationFormNameLabel.Text = "Name";
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.aboutToolStripMenuItem,
+            this.exitToolStripMenuItem});
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(50, 20);
+            this.toolStripMenuItem1.Text = "Menu";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.ToolStripMenuItem1_Click);
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.aboutToolStripMenuItem.Text = "About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.AboutToolStripMenuItem_Click);
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
+            // 
+            // settingsToolStripMenuItem
+            // 
+            this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.chooseCOMToolStripMenuItem,
+            this.installModulesToolStripMenuItem});
+            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
+            this.settingsToolStripMenuItem.Text = "Settings";
+            // 
+            // chooseCOMToolStripMenuItem
+            // 
+            this.chooseCOMToolStripMenuItem.Name = "chooseCOMToolStripMenuItem";
+            this.chooseCOMToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
+            this.chooseCOMToolStripMenuItem.Text = "Select Connection Port";
+            this.chooseCOMToolStripMenuItem.Click += new System.EventHandler(this.ChooseCOMToolStripMenuItem_Click);
+            // 
+            // installModulesToolStripMenuItem
+            // 
+            this.installModulesToolStripMenuItem.Name = "installModulesToolStripMenuItem";
+            this.installModulesToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
+            this.installModulesToolStripMenuItem.Text = "Install Modules";
+            this.installModulesToolStripMenuItem.Click += new System.EventHandler(this.InstallModulesToolStripMenuItem_Click);
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1,
+            this.settingsToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(1019, 24);
+            this.menuStrip1.TabIndex = 10;
+            this.menuStrip1.Text = "menuStrip1";
             // 
             // MainWindow
             // 
@@ -487,6 +544,7 @@
             this.AutoSize = true;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1019, 632);
+            this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.ApplicationsGroupBox);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.debugTextBox);
@@ -504,8 +562,6 @@
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "RFGrid Tools";
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
@@ -513,6 +569,10 @@
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             this.ApplicationsGroupBox.ResumeLayout(false);
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -530,10 +590,6 @@
         private System.Windows.Forms.Button clearButton;
         private System.Windows.Forms.TextBox soundTextBox;
         private System.Windows.Forms.Button soundButton;
-        private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem chooseCOMToolStripMenuItem;
         private System.IO.Ports.SerialPort serialPort1;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
@@ -543,9 +599,6 @@
         private System.Windows.Forms.TextBox dispCalibXBox;
         private System.Windows.Forms.Label gridSizeLabel;
         private System.Windows.Forms.Button dispCalibrateButton;
-        private System.Windows.Forms.ToolStripMenuItem installModulesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Button backgroundImgButton;
         private System.Windows.Forms.TextBox backgroundImgTextBox;
@@ -559,8 +612,20 @@
         private System.Windows.Forms.Label XLabel;
         private System.Windows.Forms.GroupBox ApplicationsGroupBox;
         private System.Windows.Forms.Button ApplicationsRefreshButton;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button applicationLaunchButton;
         private System.Windows.Forms.ListBox ApplicationsList;
+        private System.Windows.Forms.TextBox applicationFolderTextBox;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.Button createNewApplicationButton;
+        private System.Windows.Forms.Button openExistingApplicationButton;
+        private System.Windows.Forms.Label applicationFormNameLabel;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem chooseCOMToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem installModulesToolStripMenuItem;
+        private System.Windows.Forms.MenuStrip menuStrip1;
     }
 }
 
