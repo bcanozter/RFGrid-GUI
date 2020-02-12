@@ -16,13 +16,19 @@ namespace RFGrid_GUI
     public partial class MainWindow : Form
     {
         string selectedGameGlobal = "";
+        SerialPort serialPort = new SerialPort();
+        const int dispCalib = 1;
+        const int backgroundCalib = 2;
+        const int launch = 3;
         public MainWindow()
         {
             //this.BackgroundImage = Properties.Resources.im; #disable until we find a better background image
             InitializeComponent();
+            ApplicationsRefreshButton_Click(null,new EventArgs());
             
         }
 
+    
 
         private void ImageButton_Click(object sender, EventArgs e)
         {
@@ -45,17 +51,43 @@ namespace RFGrid_GUI
             string data = "";
             bool flag = false;
             bool duplicate_id = false;
-      
-            if (!(String.IsNullOrEmpty((string)tagBox.Text)) && (!(String.IsNullOrEmpty((string)imageTextBox.Text))))
+            string new_image_path = "";
+            string new_sound_path = "";
+            string new_sound_second_path = "";
+
+            //Tag ID must be present
+            if (!(String.IsNullOrEmpty((string)tagBox.Text)))
             {
+                //Check first sound textbox
                 if (((String.IsNullOrEmpty((string)soundTextBox.Text))))
-                    soundTextBox.Text = "none";
-                string new_image_path = "./images/objects/" + Path.GetFileName(imageTextBox.Text);
-                string new_sound_path = "./sounds/" + Path.GetFileName(soundTextBox.Text);
-                data = "\n" + tagBox.Text + "," + new_image_path + "," + new_sound_path;
+                {
+                    soundTextBox.Text = "";
+                    new_sound_path = "";
+                }
+                else
+                {
+                    new_sound_path = "./sounds/" + Path.GetFileName(soundTextBox.Text);
+                }
+                if (((String.IsNullOrEmpty((string)secondSoundTextBox.Text))))
+                {
+                    secondSoundTextBox.Text = "";
+                    new_sound_second_path = "";
+                }
+                else
+                {
+                    new_sound_second_path = "./sounds/" + Path.GetFileName(secondSoundTextBox.Text);
+                }
+
+                if ((!(String.IsNullOrEmpty((string)imageTextBox.Text))))
+                {
+                    new_image_path = "./images/objects/" + Path.GetFileName(imageTextBox.Text);
+                }
+
+
+                data = tagBox.Text + "," + new_image_path + "," + new_sound_path + "," + new_sound_second_path;
                 flag = true;
             }
-            else System.Windows.Forms.MessageBox.Show("Tag ID or Image cannot be empty!","Error",MessageBoxButtons.OK,MessageBoxIcon.Error);
+            else System.Windows.Forms.MessageBox.Show("Tag ID must be present!","Error",MessageBoxButtons.OK,MessageBoxIcon.Error);
 
             if (flag)
             {
@@ -63,7 +95,7 @@ namespace RFGrid_GUI
                 string configs_path = Directory.GetCurrentDirectory() + "\\applications\\" + selectedGameGlobal + "\\configs\\";
                 string objects_path = Directory.GetCurrentDirectory() + "\\applications\\" + selectedGameGlobal + "\\images\\objects\\";
                 string sounds_path = Directory.GetCurrentDirectory() + "\\applications\\" + selectedGameGlobal+ "\\sounds\\";
-                string path = Directory.GetCurrentDirectory() + "\\applications" + selectedGameGlobal + "\\configs\\tags.rfgridtag";
+                string path = Directory.GetCurrentDirectory() + "\\applications\\" + selectedGameGlobal + "\\configs\\tags.rfgridtag";
                 if (Directory.Exists(configs_path))
                 {
                     if (File.Exists(path))
@@ -96,9 +128,12 @@ namespace RFGrid_GUI
                         System.IO.File.WriteAllText(path, data + Environment.NewLine);
 
                     }
-                    if (soundTextBox.Text != "none")
+                    if (soundTextBox.Text != "")
                         System.IO.File.Copy(soundTextBox.Text, sounds_path + Path.GetFileName(soundTextBox.Text), true);
-                    System.IO.File.Copy(imageTextBox.Text, objects_path + Path.GetFileName(imageTextBox.Text), true);
+                    if (secondSoundTextBox.Text != "")
+                        System.IO.File.Copy(secondSoundTextBox.Text, sounds_path + Path.GetFileName(secondSoundTextBox.Text), true);
+                    if(imageTextBox.Text != "")
+                        System.IO.File.Copy(imageTextBox.Text, objects_path + Path.GetFileName(imageTextBox.Text), true);
                     System.Windows.Forms.MessageBox.Show("Tag is sucessfully created.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
                 else System.Windows.Forms.MessageBox.Show("Make sure this executable is located in the rfgrid folder.",
@@ -153,11 +188,15 @@ namespace RFGrid_GUI
             System.Windows.Forms.MessageBox.Show("rfgrid device dimensions.\nExample: 4x4, 8x8, 12x12,16x16.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
+        string original_dir = Directory.GetCurrentDirectory();
+
         private void DispCalibrateButton_Click(object sender, EventArgs e)
         {
-            string filePath = Directory.GetCurrentDirectory() + "\\applications\\" + selectedGameGlobal+ "\\rfgridDispCalib.py";
+            Directory.SetCurrentDirectory(Directory.GetCurrentDirectory() + "\\applications\\" + selectedGameGlobal);
+            string filePath = "rfgridDispCalib.py";
             string args = dispCalibXBox.Text + "x" + dispCalibYBox.Text;
-            run_cmd(filePath, args);
+            run_cmd(filePath, args,dispCalib);
+            Directory.SetCurrentDirectory(original_dir);
         }
 
 
@@ -167,7 +206,7 @@ namespace RFGrid_GUI
             if (!File.Exists(Directory.GetCurrentDirectory() + @"\python\python-3.7.6\Scripts\pip.exe"))
             {
                 filePath = Directory.GetCurrentDirectory() + @"\python\setup\get-pip.py";
-                run_cmd(filePath, null);
+                run_cmd(filePath, null,dispCalib);
 
 
                 filePath = Directory.GetCurrentDirectory() + @"\python\python-3.7.6\Scripts\Lib\site-packages" + ";" + Directory.GetCurrentDirectory() + @"\python\python-3.7.6\Scripts" + ";" + Directory.GetCurrentDirectory() + @"\python\python-3.7.6";
@@ -176,20 +215,30 @@ namespace RFGrid_GUI
             else
             {
                 filePath = Directory.GetCurrentDirectory() + @"\python\setup\modules.py";
-                run_cmd(filePath, null);
+                run_cmd(filePath, null,dispCalib);
             }
         }
 
 
-        private void run_cmd(string cmd, string args)
+        private void run_cmd(string cmd, string args, int type)
         {
 
             string result;
 
             System.Diagnostics.ProcessStartInfo start = new System.Diagnostics.ProcessStartInfo();
             start.FileName = System.AppDomain.CurrentDomain.BaseDirectory + @"python\python-3.7.6\python.exe";
-            //@"C:\python27\python.exe";
-            args = selectedGameGlobal + " " + args;
+            switch (type) {
+                case dispCalib:
+                    args = args;
+                    break;
+                case backgroundCalib:
+
+                    args = "default.jpg";
+                    break;
+                case launch:
+                    args = selectedGameGlobal + " " + args;
+                    break;
+            }
             debugTextBox.AppendText(args);
             start.Arguments = string.Format(@"""{0}"" {1}", cmd, args);
             start.UseShellExecute = false;
@@ -230,18 +279,17 @@ namespace RFGrid_GUI
 
         private void BackgroundCalibButton_Click(object sender, EventArgs e)
         {
-            if ((backgroundImgTextBox.Text != null) && (File.Exists(backgroundImgTextBox.Text)))
+            //debugTextBox.AppendText(Directory.GetCurrentDirectory());
+            Directory.SetCurrentDirectory(Directory.GetCurrentDirectory() + "\\applications\\" + selectedGameGlobal);
+            string backgrounds_path = Directory.GetCurrentDirectory() + "\\images\\backgrounds\\";
+            string filePath = "rfgridBackgroundCalib.py";
+            if (File.Exists(backgroundImgTextBox.Text))
             {
-                string backgrounds_path = Directory.GetCurrentDirectory() + "\\applications\\" + selectedGameGlobal+ "\\images\\backgrounds\\";
-                string filePath = Directory.GetCurrentDirectory() + "\\applications\\" +  selectedGameGlobal+ "\\rfgridBackgroundCalib.py";
                 System.IO.File.Copy(backgroundImgTextBox.Text, backgrounds_path + "default.jpg", true);
-                run_cmd(filePath, Path.GetFileName(backgroundImgTextBox.Text));
-            }
-            else
-            {
-                System.Windows.Forms.MessageBox.Show("Please select an image.",
-                    "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+                run_cmd(filePath, null,backgroundCalib);
+            }                
+
+            Directory.SetCurrentDirectory(original_dir);
         }
 
         private void AboutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -271,7 +319,7 @@ namespace RFGrid_GUI
                 string[] arr = portTextLabel.Text.Split(' ');
                 int index = arr.Length;
                 /* Initialize set-up here*/
-                SerialPort serialPort = new SerialPort();
+                
                 serialPort.PortName = arr[index - 1];
                 serialPort.BaudRate = 9600;
                 serialPort.DataBits = 8;
@@ -360,7 +408,7 @@ namespace RFGrid_GUI
         }
 
 
-        private void ApplicationsRefreshButton_Click(object sender, EventArgs e)
+        public void ApplicationsRefreshButton_Click(object sender, EventArgs e)
         {
             ApplicationsList.Items.Clear();
             string applications_path = Directory.GetCurrentDirectory() + "\\applications";
@@ -369,49 +417,20 @@ namespace RFGrid_GUI
             {
                 ApplicationsList.Items.Add(Path.GetFileName(fileName));
             }
+            ApplicationsList.Sorted = true;
 
 
         }
 
         private void createNewApplicationButton_Click(object sender, EventArgs e)
         {
-           string sourceFolder = (Directory.GetCurrentDirectory() + @"\applications\defaultAssets\");
-           string newFolderPath = Directory.GetCurrentDirectory() + @"\applications\" + applicationFolderTextBox.Text;
-           if (applicationFolderTextBox.Text != null)
-           {
-                if (!Directory.Exists(newFolderPath))
-                {
-                    System.IO.Directory.CreateDirectory(newFolderPath);
-                    if (Directory.Exists(sourceFolder))
-                    {
-
-                        DirectoryCopy(sourceFolder, newFolderPath);
-                        System.IO.File.Move((Directory.GetCurrentDirectory() + @"\applications\" + applicationFolderTextBox.Text + @"\rfgridGame.py"),
-                            (Directory.GetCurrentDirectory() + @"\applications\" + applicationFolderTextBox.Text + @"\" + applicationFolderTextBox.Text + ".py"));
-                        string info = "New game folder sucessfully created!";
-                        System.Windows.Forms.MessageBox.Show(info, "About", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-                    else
-                    {
-                        string info = "Make sure defaultAssetsfolder is located in applications folder.";
-                        System.Windows.Forms.MessageBox.Show(info, "About", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                    }
-                }
-                else
-                {
-                    System.Windows.Forms.MessageBox.Show("Game folder already exists.", "About", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                }
-
-
-            }
-
+            NewGameForm to = new NewGameForm(this);
+            to.Show();
 
         }
 
 
-        private void DirectoryCopy(string sourceFolder,string destination)
+        public void DirectoryCopy(string sourceFolder,string destination)
             {
 
             DirectoryInfo dir = new DirectoryInfo(sourceFolder);
@@ -443,23 +462,81 @@ namespace RFGrid_GUI
         
         private void openExistingApplicationButton_Click(object sender, EventArgs e)
         {
-            string folderName = "";
-            FolderBrowserDialog folderBrowserDialog1 = new FolderBrowserDialog();
-            folderBrowserDialog1.RootFolder = Environment.SpecialFolder.Desktop;
-            folderBrowserDialog1.SelectedPath = Directory.GetCurrentDirectory() + @"\applications";
-            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
-            {
-                folderName = Path.GetFileName(folderBrowserDialog1.SelectedPath);
-                applicationFolderTextBox.Text = folderName;
-                selectedGameGlobal = folderName;
+            /* OLD CODE Now we dont need to browse */
+            //string folderName = "";
+            //FolderBrowserDialog folderBrowserDialog1 = new FolderBrowserDialog();
+            //folderBrowserDialog1.RootFolder = Environment.SpecialFolder.Desktop;
+            //folderBrowserDialog1.SelectedPath = Directory.GetCurrentDirectory() + @"\applications";
+            //if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
+            //{
+            //    folderName = Path.GetFileName(folderBrowserDialog1.SelectedPath);
+            //    ApplicationsList.SelectedItem = folderName;
+            //    selectedGameGlobal = folderName;
 
+            //}
+            /* SELF NOTE *** NEED TO MAKE SURE ESSENTIAL FILES EXIST IN THE DIRECTORY *** */
+            selectedGameGlobal = ApplicationsList.GetItemText(ApplicationsList.SelectedItem);
+            DialogResult result = System.Windows.Forms.MessageBox.Show("Application " + "\"" + selectedGameGlobal + "\"" +  " is sucessfully loaded.",
+      "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void SecondSoundButton_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog1 = new OpenFileDialog()
+            {
+                FileName = "Select a sound file",
+                Filter = "Sound files (*.wav)|*.wav",
+                Title = "Choose Sound file"
+            };
+
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                secondSoundButton.Text = openFileDialog1.FileName;
             }
         }
 
-        private void applicationLaunchButton_click(object sender, EventArgs e)
+        private void DeleteApplicationButton_Click(object sender, EventArgs e)
         {
-            string gamePath = Directory.GetCurrentDirectory() + @"\applications" + selectedGameGlobal + @"\" + selectedGameGlobal + ".py";
-            run_cmd(gamePath, null);
+            string selected = ApplicationsList.GetItemText(ApplicationsList.SelectedItem);
+            string selected_path = Directory.GetCurrentDirectory() + @"\applications\" + selected;
+            DialogResult result = System.Windows.Forms.MessageBox.Show("Are you sure to delete " +"\"" + selected + "\"" + " ?",
+       "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (result == DialogResult.Yes)
+            {
+                DeleteFolder(selected_path);
+                result = System.Windows.Forms.MessageBox.Show("Application " + "\""+ selected + "\"" + "is sucessfully deleted.",
+                       "Information", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                if (result == DialogResult.OK) ApplicationsRefreshButton_Click(DeleteApplicationButton,e);
+            }
+
+        }
+
+        private void DeleteFolder(string sourceFolder)
+        {
+            DirectoryInfo directoryInfo = new DirectoryInfo(sourceFolder);
+            DirectoryInfo[] dirs = directoryInfo.GetDirectories();
+     
+            foreach (FileInfo file in directoryInfo.GetFiles())
+            {
+                file.Delete();
+            }
+
+            foreach (DirectoryInfo subfolder in dirs)
+            {
+                DeleteFolder(subfolder.FullName);
+            }
+            Directory.Delete(sourceFolder);
+        }
+
+        private void LaunchButton_Click(object sender, EventArgs e)
+        {
+            serialPort.Close();
+            string filePath = Directory.GetCurrentDirectory() + "\\applications\\" + selectedGameGlobal;
+            string gameFile = Directory.GetCurrentDirectory() + "\\applications\\" + selectedGameGlobal + @"\" + selectedGameGlobal + ".py";
+            Directory.SetCurrentDirectory(filePath);
+            run_cmd(gameFile, null,launch);
+            Directory.SetCurrentDirectory(original_dir);
+
         }
     }
 

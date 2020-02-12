@@ -62,13 +62,9 @@
             this.label3 = new System.Windows.Forms.Label();
             this.ApplicationsGroupBox = new System.Windows.Forms.GroupBox();
             this.ApplicationsRefreshButton = new System.Windows.Forms.Button();
-            this.applicationLaunchButton = new System.Windows.Forms.Button();
             this.ApplicationsList = new System.Windows.Forms.ListBox();
-            this.applicationFolderTextBox = new System.Windows.Forms.TextBox();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.createNewApplicationButton = new System.Windows.Forms.Button();
-            this.openExistingApplicationButton = new System.Windows.Forms.Button();
-            this.applicationFormNameLabel = new System.Windows.Forms.Label();
+            this.LoadApplicationButton = new System.Windows.Forms.Button();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -76,11 +72,14 @@
             this.chooseCOMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.installModulesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.DeleteApplicationButton = new System.Windows.Forms.Button();
+            this.secondSoundTextBox = new System.Windows.Forms.TextBox();
+            this.secondSoundButton = new System.Windows.Forms.Button();
+            this.LaunchButton = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.ApplicationsGroupBox.SuspendLayout();
-            this.groupBox4.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -150,7 +149,7 @@
             // 
             // saveButton
             // 
-            this.saveButton.Location = new System.Drawing.Point(48, 151);
+            this.saveButton.Location = new System.Drawing.Point(31, 176);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(100, 23);
             this.saveButton.TabIndex = 6;
@@ -191,6 +190,8 @@
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.Transparent;
+            this.groupBox1.Controls.Add(this.secondSoundButton);
+            this.groupBox1.Controls.Add(this.secondSoundTextBox);
             this.groupBox1.Controls.Add(this.tagGetIdButton);
             this.groupBox1.Controls.Add(this.tagBox);
             this.groupBox1.Controls.Add(this.soundButton);
@@ -204,14 +205,14 @@
             this.groupBox1.Controls.Add(this.imageButton);
             this.groupBox1.Location = new System.Drawing.Point(18, 240);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(355, 193);
+            this.groupBox1.Size = new System.Drawing.Size(355, 222);
             this.groupBox1.TabIndex = 11;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Tag Creator";
             // 
             // tagGetIdButton
             // 
-            this.tagGetIdButton.Location = new System.Drawing.Point(193, 151);
+            this.tagGetIdButton.Location = new System.Drawing.Point(199, 176);
             this.tagGetIdButton.Name = "tagGetIdButton";
             this.tagGetIdButton.Size = new System.Drawing.Size(100, 23);
             this.tagGetIdButton.TabIndex = 10;
@@ -391,10 +392,12 @@
             // 
             // ApplicationsGroupBox
             // 
+            this.ApplicationsGroupBox.Controls.Add(this.DeleteApplicationButton);
+            this.ApplicationsGroupBox.Controls.Add(this.LoadApplicationButton);
+            this.ApplicationsGroupBox.Controls.Add(this.createNewApplicationButton);
             this.ApplicationsGroupBox.Controls.Add(this.ApplicationsRefreshButton);
-            this.ApplicationsGroupBox.Controls.Add(this.applicationLaunchButton);
             this.ApplicationsGroupBox.Controls.Add(this.ApplicationsList);
-            this.ApplicationsGroupBox.Location = new System.Drawing.Point(390, 244);
+            this.ApplicationsGroupBox.Location = new System.Drawing.Point(12, 45);
             this.ApplicationsGroupBox.Name = "ApplicationsGroupBox";
             this.ApplicationsGroupBox.Size = new System.Drawing.Size(361, 189);
             this.ApplicationsGroupBox.TabIndex = 18;
@@ -403,23 +406,13 @@
             // 
             // ApplicationsRefreshButton
             // 
-            this.ApplicationsRefreshButton.Location = new System.Drawing.Point(255, 72);
+            this.ApplicationsRefreshButton.Location = new System.Drawing.Point(254, 26);
             this.ApplicationsRefreshButton.Name = "ApplicationsRefreshButton";
-            this.ApplicationsRefreshButton.Size = new System.Drawing.Size(75, 23);
+            this.ApplicationsRefreshButton.Size = new System.Drawing.Size(77, 23);
             this.ApplicationsRefreshButton.TabIndex = 2;
             this.ApplicationsRefreshButton.Text = "Refresh";
             this.ApplicationsRefreshButton.UseVisualStyleBackColor = true;
             this.ApplicationsRefreshButton.Click += new System.EventHandler(this.ApplicationsRefreshButton_Click);
-            // 
-            // applicationLaunchButton
-            // 
-            this.applicationLaunchButton.Location = new System.Drawing.Point(255, 133);
-            this.applicationLaunchButton.Name = "applicationLaunchButton";
-            this.applicationLaunchButton.Size = new System.Drawing.Size(75, 23);
-            this.applicationLaunchButton.TabIndex = 1;
-            this.applicationLaunchButton.Text = "Launch";
-            this.applicationLaunchButton.UseVisualStyleBackColor = true;
-            this.applicationLaunchButton.Click += new System.EventHandler(this.applicationLaunchButton_click);
             // 
             // ApplicationsList
             // 
@@ -429,55 +422,25 @@
             this.ApplicationsList.Size = new System.Drawing.Size(221, 160);
             this.ApplicationsList.TabIndex = 0;
             // 
-            // applicationFolderTextBox
-            // 
-            this.applicationFolderTextBox.Location = new System.Drawing.Point(9, 64);
-            this.applicationFolderTextBox.Name = "applicationFolderTextBox";
-            this.applicationFolderTextBox.Size = new System.Drawing.Size(167, 20);
-            this.applicationFolderTextBox.TabIndex = 19;
-            // 
-            // groupBox4
-            // 
-            this.groupBox4.Controls.Add(this.createNewApplicationButton);
-            this.groupBox4.Controls.Add(this.openExistingApplicationButton);
-            this.groupBox4.Controls.Add(this.applicationFormNameLabel);
-            this.groupBox4.Controls.Add(this.applicationFolderTextBox);
-            this.groupBox4.Location = new System.Drawing.Point(18, 41);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(355, 193);
-            this.groupBox4.TabIndex = 20;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Application Form";
-            // 
             // createNewApplicationButton
             // 
-            this.createNewApplicationButton.Location = new System.Drawing.Point(182, 151);
+            this.createNewApplicationButton.Location = new System.Drawing.Point(254, 65);
             this.createNewApplicationButton.Name = "createNewApplicationButton";
-            this.createNewApplicationButton.Size = new System.Drawing.Size(100, 23);
+            this.createNewApplicationButton.Size = new System.Drawing.Size(77, 23);
             this.createNewApplicationButton.TabIndex = 22;
-            this.createNewApplicationButton.Text = "Create New";
+            this.createNewApplicationButton.Text = "New Game";
             this.createNewApplicationButton.UseVisualStyleBackColor = true;
             this.createNewApplicationButton.Click += new System.EventHandler(this.createNewApplicationButton_Click);
             // 
-            // openExistingApplicationButton
+            // LoadApplicationButton
             // 
-            this.openExistingApplicationButton.Location = new System.Drawing.Point(48, 151);
-            this.openExistingApplicationButton.Name = "openExistingApplicationButton";
-            this.openExistingApplicationButton.Size = new System.Drawing.Size(100, 23);
-            this.openExistingApplicationButton.TabIndex = 21;
-            this.openExistingApplicationButton.Text = "Choose Existing";
-            this.openExistingApplicationButton.UseVisualStyleBackColor = true;
-            this.openExistingApplicationButton.Click += new System.EventHandler(this.openExistingApplicationButton_Click);
-            // 
-            // applicationFormNameLabel
-            // 
-            this.applicationFormNameLabel.AutoSize = true;
-            this.applicationFormNameLabel.Font = new System.Drawing.Font("Verdana", 11F);
-            this.applicationFormNameLabel.Location = new System.Drawing.Point(6, 35);
-            this.applicationFormNameLabel.Name = "applicationFormNameLabel";
-            this.applicationFormNameLabel.Size = new System.Drawing.Size(52, 18);
-            this.applicationFormNameLabel.TabIndex = 20;
-            this.applicationFormNameLabel.Text = "Name";
+            this.LoadApplicationButton.Location = new System.Drawing.Point(253, 108);
+            this.LoadApplicationButton.Name = "LoadApplicationButton";
+            this.LoadApplicationButton.Size = new System.Drawing.Size(76, 23);
+            this.LoadApplicationButton.TabIndex = 21;
+            this.LoadApplicationButton.Text = "Load";
+            this.LoadApplicationButton.UseVisualStyleBackColor = true;
+            this.LoadApplicationButton.Click += new System.EventHandler(this.openExistingApplicationButton_Click);
             // 
             // toolStripMenuItem1
             // 
@@ -537,6 +500,43 @@
             this.menuStrip1.TabIndex = 10;
             this.menuStrip1.Text = "menuStrip1";
             // 
+            // DeleteApplicationButton
+            // 
+            this.DeleteApplicationButton.Location = new System.Drawing.Point(254, 147);
+            this.DeleteApplicationButton.Name = "DeleteApplicationButton";
+            this.DeleteApplicationButton.Size = new System.Drawing.Size(75, 23);
+            this.DeleteApplicationButton.TabIndex = 23;
+            this.DeleteApplicationButton.Text = "Delete";
+            this.DeleteApplicationButton.UseVisualStyleBackColor = true;
+            this.DeleteApplicationButton.Click += new System.EventHandler(this.DeleteApplicationButton_Click);
+            // 
+            // secondSoundTextBox
+            // 
+            this.secondSoundTextBox.Location = new System.Drawing.Point(90, 150);
+            this.secondSoundTextBox.Name = "secondSoundTextBox";
+            this.secondSoundTextBox.Size = new System.Drawing.Size(167, 20);
+            this.secondSoundTextBox.TabIndex = 11;
+            // 
+            // secondSoundButton
+            // 
+            this.secondSoundButton.Location = new System.Drawing.Point(273, 146);
+            this.secondSoundButton.Name = "secondSoundButton";
+            this.secondSoundButton.Size = new System.Drawing.Size(75, 23);
+            this.secondSoundButton.TabIndex = 12;
+            this.secondSoundButton.Text = "Browse";
+            this.secondSoundButton.UseVisualStyleBackColor = true;
+            this.secondSoundButton.Click += new System.EventHandler(this.SecondSoundButton_Click);
+            // 
+            // LaunchButton
+            // 
+            this.LaunchButton.Location = new System.Drawing.Point(498, 277);
+            this.LaunchButton.Name = "LaunchButton";
+            this.LaunchButton.Size = new System.Drawing.Size(313, 123);
+            this.LaunchButton.TabIndex = 19;
+            this.LaunchButton.Text = "LAUNCH";
+            this.LaunchButton.UseVisualStyleBackColor = true;
+            this.LaunchButton.Click += new System.EventHandler(this.LaunchButton_Click);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -544,7 +544,7 @@
             this.AutoSize = true;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1019, 632);
-            this.Controls.Add(this.groupBox4);
+            this.Controls.Add(this.LaunchButton);
             this.Controls.Add(this.ApplicationsGroupBox);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.debugTextBox);
@@ -569,8 +569,6 @@
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             this.ApplicationsGroupBox.ResumeLayout(false);
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -612,13 +610,9 @@
         private System.Windows.Forms.Label XLabel;
         private System.Windows.Forms.GroupBox ApplicationsGroupBox;
         private System.Windows.Forms.Button ApplicationsRefreshButton;
-        private System.Windows.Forms.Button applicationLaunchButton;
         private System.Windows.Forms.ListBox ApplicationsList;
-        private System.Windows.Forms.TextBox applicationFolderTextBox;
-        private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.Button createNewApplicationButton;
-        private System.Windows.Forms.Button openExistingApplicationButton;
-        private System.Windows.Forms.Label applicationFormNameLabel;
+        private System.Windows.Forms.Button LoadApplicationButton;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
@@ -626,6 +620,10 @@
         private System.Windows.Forms.ToolStripMenuItem chooseCOMToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem installModulesToolStripMenuItem;
         private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.Button DeleteApplicationButton;
+        private System.Windows.Forms.Button secondSoundButton;
+        private System.Windows.Forms.TextBox secondSoundTextBox;
+        private System.Windows.Forms.Button LaunchButton;
     }
 }
 
