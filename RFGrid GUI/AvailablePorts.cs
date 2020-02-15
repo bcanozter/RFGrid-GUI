@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using System.IO.Ports;
 using System.Management;
 
-namespace Tag_Scanner
+namespace RFGrid_GUI
 {
     public partial class AvailablePorts : Form
     {
@@ -35,6 +35,7 @@ namespace Tag_Scanner
         }
 
 
+        const int EMPTY = 0;
 
         private void getAvailablePorts()
         {
@@ -50,10 +51,16 @@ namespace Tag_Scanner
                     string desc = item["Description"].ToString();
                     string deviceId = item["DeviceID"].ToString();
 
-
-                    PortList.Items.Add(desc + " " + deviceId);
+                    if (desc.Contains("Arduino")){
+                        PortList.Items.Add(desc + " " + deviceId);
+                    }
                     
 
+                }
+                if(PortList.Items.Count == EMPTY)
+                {
+                    string info = "No Arduino COM Port Found. Make sure Arduino Board is Connected to the Computer.";
+                    System.Windows.Forms.MessageBox.Show(info, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
             catch (ManagementException e)
@@ -67,7 +74,8 @@ namespace Tag_Scanner
         {
 
             this.mainForm.LabelText = (PortList.GetItemText(PortList.SelectedItem));
-
+            mainForm.Text = mainForm.LabelText;
+            System.Windows.Forms.MessageBox.Show("Selected Port: " + mainForm.LabelText  , "Success", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             this.Close();
 
         }
