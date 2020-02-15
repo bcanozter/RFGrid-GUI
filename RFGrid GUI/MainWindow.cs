@@ -24,7 +24,8 @@ namespace RFGrid_GUI
         {
             //this.BackgroundImage = Properties.Resources.im; #disable until we find a better background image
             InitializeComponent();
-            ApplicationsRefreshButton_Click(null,new EventArgs());
+
+            //ApplicationsRefreshButton_Click(null,new EventArgs());
             
         }
 
@@ -87,7 +88,7 @@ namespace RFGrid_GUI
                 data = tagBox.Text + "," + new_image_path + "," + new_sound_path + "," + new_sound_second_path;
                 flag = true;
             }
-            else System.Windows.Forms.MessageBox.Show("Tag ID must be present!","Error",MessageBoxButtons.OK,MessageBoxIcon.Error);
+            else System.Windows.Forms.MessageBox.Show("Tag ID field cannot be empty!","Error",MessageBoxButtons.OK,MessageBoxIcon.Error);
 
             if (flag)
             {
@@ -147,6 +148,7 @@ namespace RFGrid_GUI
             tagBox.Text = null;
             imageTextBox.Text = null;
             soundTextBox.Text = null;
+            secondSoundButton.Text = null;
         }
 
         private void SoundButton_Click(object sender, EventArgs e)
@@ -164,11 +166,6 @@ namespace RFGrid_GUI
             }
         }
 
-
-        private void ToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void ChooseCOMToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -192,11 +189,19 @@ namespace RFGrid_GUI
 
         private void DispCalibrateButton_Click(object sender, EventArgs e)
         {
-            Directory.SetCurrentDirectory(Directory.GetCurrentDirectory() + "\\applications\\" + selectedGameGlobal);
-            string filePath = "rfgridDispCalib.py";
-            string args = dispCalibXBox.Text + "x" + dispCalibYBox.Text;
-            run_cmd(filePath, args,dispCalib);
-            Directory.SetCurrentDirectory(original_dir);
+            if (loadedConfigurationLabel.Text != "NA")
+            {
+                Directory.SetCurrentDirectory(Directory.GetCurrentDirectory() + "\\applications\\" + selectedGameGlobal);
+                string filePath = "rfgridDispCalib.py";
+                string args = dispCalibXBox.Text + "x" + dispCalibYBox.Text;
+                run_cmd(filePath, args, dispCalib);
+                Directory.SetCurrentDirectory(original_dir);
+            }
+            else
+            {
+                System.Windows.Forms.MessageBox.Show("Please load an Application first.",
+                    "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
 
@@ -279,28 +284,35 @@ namespace RFGrid_GUI
 
         private void BackgroundCalibButton_Click(object sender, EventArgs e)
         {
-            //debugTextBox.AppendText(Directory.GetCurrentDirectory());
-            Directory.SetCurrentDirectory(Directory.GetCurrentDirectory() + "\\applications\\" + selectedGameGlobal);
-            string backgrounds_path = Directory.GetCurrentDirectory() + "\\images\\backgrounds\\";
-            string filePath = "rfgridBackgroundCalib.py";
-            if (File.Exists(backgroundImgTextBox.Text))
+            if (loadedConfigurationLabel.Text != "NA")
             {
-                System.IO.File.Copy(backgroundImgTextBox.Text, backgrounds_path + "default.jpg", true);
-                run_cmd(filePath, null,backgroundCalib);
-            }                
+                Directory.SetCurrentDirectory(Directory.GetCurrentDirectory() + "\\applications\\" + selectedGameGlobal);
+                string backgrounds_path = Directory.GetCurrentDirectory() + "\\images\\backgrounds\\";
+                string filePath = "rfgridBackgroundCalib.py";
+                if (File.Exists(backgroundImgTextBox.Text))
+                {
+                    System.IO.File.Copy(backgroundImgTextBox.Text, backgrounds_path + "default.jpg", true);
+                    run_cmd(filePath, null, backgroundCalib);
+                }
 
-            Directory.SetCurrentDirectory(original_dir);
+                Directory.SetCurrentDirectory(original_dir);
+
+            }
+            else
+            {
+                System.Windows.Forms.MessageBox.Show("Please load an Application first.",
+                    "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void AboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string info = "ECED 4900-4901 Senior Year Project 2019-2020\n\n" +
-                          "Project: rfgrid\n\n" +
+                          "Project: Interactive RFID Display\n\n" +
                           "Members\n" +
                           "\n" +
                           "- Burak Ozter\n" +
-                          "- Mark Hooper\n" +
-                          "- Cathy Song   ";
+                          "- Mark Hooper";
             System.Windows.Forms.MessageBox.Show(info, "About", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
@@ -337,6 +349,13 @@ namespace RFGrid_GUI
                 serialPort.DataReceived += new
      SerialDataReceivedEventHandler(port_DataReceived);
 
+                tagGetIdButton.Enabled = false;
+
+            }
+            else
+            {
+                System.Windows.Forms.MessageBox.Show("No COM Port is Selected.",
+                   "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
         }
@@ -403,7 +422,9 @@ namespace RFGrid_GUI
 
         private void TX_Sync(SerialPort serialPort){
             //send sync here..
-            var sync = new byte[] {0xFF, 0x01, 0x08,0x08}; //SYNC CMD= 0xFF , START BYTE= 0x01, XMAX = 0x08, YMAX = 0x08
+            byte x = Convert.ToByte(Int16.Parse(dispCalibXBox.Text));
+            byte y = Convert.ToByte(Int16.Parse(dispCalibYBox.Text));
+            var sync = new byte[] {0xFF, x, y}; //SYNC CMD= 0xFF , START BYTE= 0x01, XMAX = 0x08, YMAX = 0x08
             serialPort.Write(sync,0,sync.Length);
         }
 
@@ -411,13 +432,25 @@ namespace RFGrid_GUI
         public void ApplicationsRefreshButton_Click(object sender, EventArgs e)
         {
             ApplicationsList.Items.Clear();
+            
             string applications_path = Directory.GetCurrentDirectory() + "\\applications";
-            string[] files = Directory.GetDirectories(applications_path);
-            foreach(string fileName in files)
+            if (Directory.Exists(applications_path))
             {
-                ApplicationsList.Items.Add(Path.GetFileName(fileName));
+                string[] files = Directory.GetDirectories(applications_path);
+                foreach (string fileName in files)
+                {
+                    if (!(Path.GetFileName(fileName) == "defaultAssets"))
+                    {
+                        ApplicationsList.Items.Add(Path.GetFileName(fileName));
+                    }
+                }
+                ApplicationsList.Sorted = true;
             }
-            ApplicationsList.Sorted = true;
+            else
+            {
+                System.Windows.Forms.MessageBox.Show("Cannot locate Applications Folder",
+                       "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
 
 
         }
@@ -462,22 +495,12 @@ namespace RFGrid_GUI
         
         private void openExistingApplicationButton_Click(object sender, EventArgs e)
         {
-            /* OLD CODE Now we dont need to browse */
-            //string folderName = "";
-            //FolderBrowserDialog folderBrowserDialog1 = new FolderBrowserDialog();
-            //folderBrowserDialog1.RootFolder = Environment.SpecialFolder.Desktop;
-            //folderBrowserDialog1.SelectedPath = Directory.GetCurrentDirectory() + @"\applications";
-            //if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
-            //{
-            //    folderName = Path.GetFileName(folderBrowserDialog1.SelectedPath);
-            //    ApplicationsList.SelectedItem = folderName;
-            //    selectedGameGlobal = folderName;
 
-            //}
             /* SELF NOTE *** NEED TO MAKE SURE ESSENTIAL FILES EXIST IN THE DIRECTORY *** */
             selectedGameGlobal = ApplicationsList.GetItemText(ApplicationsList.SelectedItem);
             DialogResult result = System.Windows.Forms.MessageBox.Show("Application " + "\"" + selectedGameGlobal + "\"" +  " is sucessfully loaded.",
       "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            loadedConfigurationLabel.Text = selectedGameGlobal;
         }
 
         private void SecondSoundButton_Click(object sender, EventArgs e)
@@ -491,7 +514,7 @@ namespace RFGrid_GUI
 
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                secondSoundButton.Text = openFileDialog1.FileName;
+                secondSoundTextBox.Text = openFileDialog1.FileName;
             }
         }
 
@@ -530,12 +553,20 @@ namespace RFGrid_GUI
 
         private void LaunchButton_Click(object sender, EventArgs e)
         {
-            serialPort.Close();
-            string filePath = Directory.GetCurrentDirectory() + "\\applications\\" + selectedGameGlobal;
-            string gameFile = Directory.GetCurrentDirectory() + "\\applications\\" + selectedGameGlobal + @"\" + selectedGameGlobal + ".py";
-            Directory.SetCurrentDirectory(filePath);
-            run_cmd(gameFile, null,launch);
-            Directory.SetCurrentDirectory(original_dir);
+            if (loadedConfigurationLabel.Text != "NA")
+            {
+                serialPort.Close();
+                string filePath = Directory.GetCurrentDirectory() + "\\applications\\" + selectedGameGlobal;
+                string gameFile = Directory.GetCurrentDirectory() + "\\applications\\" + selectedGameGlobal + @"\" + selectedGameGlobal + ".py";
+                Directory.SetCurrentDirectory(filePath);
+                run_cmd(gameFile, null, launch);
+                Directory.SetCurrentDirectory(original_dir);
+            }
+            else
+            {
+                System.Windows.Forms.MessageBox.Show("Please load an Application first.",
+                    "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
 
         }
     }
