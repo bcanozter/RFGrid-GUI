@@ -456,7 +456,7 @@ namespace RFGrid_GUI
             //send sync here..
             byte x = Convert.ToByte(Int16.Parse(device_x));
             byte y = Convert.ToByte(Int16.Parse(device_y));
-            var sync = new byte[] { 0xFF, x, y }; //SYNC CMD= 0xFF , START BYTE= 0x01, XMAX = 0x08, YMAX = 0x08
+            var sync = new byte[] { 0xFF,0x01, x, y }; //SYNC CMD= 0xFF , START BYTE= 0x01, XMAX = 0x08, YMAX = 0x08
             serialPort.Write(sync, 0, sync.Length);
         }
 
