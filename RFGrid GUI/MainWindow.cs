@@ -17,7 +17,7 @@ namespace RFGrid_GUI
         {
             //this.BackgroundImage = Properties.Resources.im; #disable until we find a better background image
             InitializeComponent();
-
+            backgroundCalibPictureBox.Image = Properties.Resources.defaultPicture;
             ApplicationsRefreshButton_Click(null, new EventArgs());
 
         }
@@ -36,6 +36,7 @@ namespace RFGrid_GUI
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 imageTextBox.Text = openFileDialog1.FileName;
+                tagCreatorPreviewBox.ImageLocation = imageTextBox.Text;
             }
 
         }
@@ -141,7 +142,7 @@ namespace RFGrid_GUI
             tagBox.Text = null;
             imageTextBox.Text = null;
             soundTextBox.Text = null;
-            secondSoundButton.Text = null;
+            secondSoundTextBox.Text = null;
         }
 
         private void SoundButton_Click(object sender, EventArgs e)
@@ -292,6 +293,8 @@ namespace RFGrid_GUI
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 backgroundImgTextBox.Text = openFileDialog1.FileName;
+                backgroundCalibPictureBox.ImageLocation = backgroundImgTextBox.Text;
+                backgroundCalibPictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
             }
         }
 
@@ -456,7 +459,7 @@ namespace RFGrid_GUI
             //send sync here..
             byte x = Convert.ToByte(Int16.Parse(device_x));
             byte y = Convert.ToByte(Int16.Parse(device_y));
-            var sync = new byte[] { 0xFF,0x01, x, y }; //SYNC CMD= 0xFF , START BYTE= 0x01, XMAX = 0x08, YMAX = 0x08
+            var sync = new byte[] { 0xFF, 0x01, x, y }; //SYNC CMD= 0xFF , START BYTE= 0x01, XMAX = 0x08, YMAX = 0x08
             serialPort.Write(sync, 0, sync.Length);
         }
 
@@ -480,7 +483,7 @@ namespace RFGrid_GUI
             }
             else
             {
-                System.Windows.Forms.MessageBox.Show("Cannot locate Applications Folder",
+                System.Windows.Forms.MessageBox.Show("Applications folder not found",
                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             }
@@ -526,14 +529,53 @@ namespace RFGrid_GUI
         }
 
 
+
         private void openExistingApplicationButton_Click(object sender, EventArgs e)
         {
-
-            /* SELF NOTE *** NEED TO MAKE SURE ESSENTIAL FILES EXIST IN THE DIRECTORY *** */
             selectedGameGlobal = ApplicationsList.GetItemText(ApplicationsList.SelectedItem);
             DialogResult result = System.Windows.Forms.MessageBox.Show("Application " + "\"" + selectedGameGlobal + "\"" + " is sucessfully loaded.",
       "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
             loadedConfigurationLabel.Text = selectedGameGlobal;
+            backgroundCalibPictureBox.ImageLocation = Directory.GetCurrentDirectory() + "\\applications\\" + selectedGameGlobal + "\\images\\backgrounds\\default.jpg";
+            backgroundCalibPictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
+
+            string tagConfigPath = original_dir + @"\applications\" + selectedGameGlobal + @"\configs\tags.rfgridtag";
+            if (File.Exists(tagConfigPath))
+            {
+                tagInfoListView.Items.Clear();
+                int i = 0;
+                ImageList imgs = new ImageList();
+                imgs.ImageSize = new System.Drawing.Size(40, 40);
+                tagInfoListView.SmallImageList = imgs;
+
+                string[] lines = System.IO.File.ReadAllLines(tagConfigPath);
+                foreach (string line in lines)
+                {
+                    var parsed_line = line.Split(',');
+                    string[] imageName = Path.GetFileName(parsed_line[1]).Split('.');
+                    string[] entranceSoundName = Path.GetFileName(parsed_line[2]).Split('.');
+                    string[] updateSoundName = Path.GetFileName(parsed_line[3]).Split('.');
+                    parsed_line[1] = imageName[0];
+                    parsed_line[2] = entranceSoundName[0];
+                    parsed_line[3] = updateSoundName[0];
+
+                    if (parsed_line[1].Length != 0) //No Image
+                    {
+                        imgs.Images.Add(parsed_line[1], System.Drawing.Image.FromFile(original_dir + @"\applications\" + selectedGameGlobal + @"\images\objects\" + imageName[0] + ".png"));
+                        tagInfoListView.Items.Add(new ListViewItem(parsed_line) { ImageIndex = i });
+                        i++;
+
+                    }
+                    else
+                    {
+                        tagInfoListView.Items.Add(new ListViewItem(parsed_line));
+                    }
+
+                }
+
+
+            }
+
         }
 
         private void SecondSoundButton_Click(object sender, EventArgs e)
@@ -620,6 +662,36 @@ namespace RFGrid_GUI
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
             {
                 e.Handled = true;
+            }
+        }
+
+        private void EntranceSoundPlayButton_Click(object sender, EventArgs e)
+        {
+            string sound_path = soundTextBox.Text;
+            if (File.Exists(sound_path))
+            {
+                System.Media.SoundPlayer player = new System.Media.SoundPlayer(sound_path);
+                player.Play();
+            }
+            else
+            {
+                System.Windows.Forms.MessageBox.Show("Sound file not found.",
+                    "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void UpdateSoundPlayButton_Click(object sender, EventArgs e)
+        {
+            string sound_path = secondSoundTextBox.Text;
+            if (File.Exists(sound_path))
+            {
+                System.Media.SoundPlayer player = new System.Media.SoundPlayer(sound_path);
+                player.Play();
+            }
+            else
+            {
+                System.Windows.Forms.MessageBox.Show("Sound file not found.",
+                    "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }
