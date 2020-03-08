@@ -123,11 +123,11 @@ namespace RFGrid_GUI
                         System.IO.File.WriteAllText(path, data + Environment.NewLine);
 
                     }
-                    if (soundTextBox.Text != "")
+                    if (soundTextBox.Text != "" && !File.Exists(objects_path + Path.GetFileName(soundTextBox.Text)))
                         System.IO.File.Copy(soundTextBox.Text, sounds_path + Path.GetFileName(soundTextBox.Text), true);
-                    if (secondSoundTextBox.Text != "")
+                    if (secondSoundTextBox.Text != "" && !File.Exists(objects_path + Path.GetFileName(secondSoundTextBox.Text)))
                         System.IO.File.Copy(secondSoundTextBox.Text, sounds_path + Path.GetFileName(secondSoundTextBox.Text), true);
-                    if (imageTextBox.Text != "")
+                    if (imageTextBox.Text != "" && !File.Exists(objects_path + Path.GetFileName(imageTextBox.Text)))
                         System.IO.File.Copy(imageTextBox.Text, objects_path + Path.GetFileName(imageTextBox.Text), true);
                     System.Windows.Forms.MessageBox.Show("Tag is sucessfully created.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
@@ -135,6 +135,7 @@ namespace RFGrid_GUI
                     "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             }
+            loadTagInfo();
         }
 
         private void ClearButton_Click(object sender, EventArgs e)
@@ -359,6 +360,9 @@ namespace RFGrid_GUI
                     dispCalibXBox.Text = "8";
                     dispCalibYBox.Text = "8";
                 }
+                string info = "Place the tag on the 0,0 tile.(top left)\n\n" +
+              "You do not need to click this button again to scan a tag.";
+                System.Windows.Forms.MessageBox.Show(info, "About", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
 
                 string[] arr = portTextLabel.Text.Split(' ');
@@ -537,8 +541,12 @@ namespace RFGrid_GUI
       "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
             loadedConfigurationLabel.Text = selectedGameGlobal;
             backgroundCalibPictureBox.ImageLocation = Directory.GetCurrentDirectory() + "\\applications\\" + selectedGameGlobal + "\\images\\backgrounds\\default.jpg";
-            backgroundCalibPictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
+            loadTagInfo();
 
+        }
+
+        private void loadTagInfo()
+        {
             string tagConfigPath = original_dir + @"\applications\" + selectedGameGlobal + @"\configs\tags.rfgridtag";
             if (File.Exists(tagConfigPath))
             {
@@ -575,7 +583,6 @@ namespace RFGrid_GUI
 
 
             }
-
         }
 
         private void SecondSoundButton_Click(object sender, EventArgs e)
@@ -692,6 +699,15 @@ namespace RFGrid_GUI
             {
                 System.Windows.Forms.MessageBox.Show("Sound file not found.",
                     "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void TagInfoListView_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+            if (tagInfoListView.SelectedItems.Count > 0)
+            {
+                tagBox.Text = tagInfoListView.SelectedItems[0].Text;
             }
         }
     }

@@ -51,10 +51,10 @@
             this.debugTextBox = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.ApplicationsGroupBox = new System.Windows.Forms.GroupBox();
+            this.ApplicationsRefreshButton = new System.Windows.Forms.Button();
             this.DeleteApplicationButton = new System.Windows.Forms.Button();
             this.LoadApplicationButton = new System.Windows.Forms.Button();
             this.createNewApplicationButton = new System.Windows.Forms.Button();
-            this.ApplicationsRefreshButton = new System.Windows.Forms.Button();
             this.ApplicationsList = new System.Windows.Forms.ListBox();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -347,6 +347,21 @@
             this.ApplicationsGroupBox.TabStop = false;
             this.ApplicationsGroupBox.Text = "Applications";
             // 
+            // ApplicationsRefreshButton
+            // 
+            this.ApplicationsRefreshButton.BackColor = System.Drawing.SystemColors.Control;
+            this.ApplicationsRefreshButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(241)))), ((int)(((byte)(187)))));
+            this.ApplicationsRefreshButton.FlatAppearance.BorderSize = 0;
+            this.ApplicationsRefreshButton.Font = new System.Drawing.Font("Century Gothic", 11.25F);
+            this.ApplicationsRefreshButton.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.ApplicationsRefreshButton.Location = new System.Drawing.Point(367, 27);
+            this.ApplicationsRefreshButton.Name = "ApplicationsRefreshButton";
+            this.ApplicationsRefreshButton.Size = new System.Drawing.Size(86, 24);
+            this.ApplicationsRefreshButton.TabIndex = 2;
+            this.ApplicationsRefreshButton.Text = "Refresh";
+            this.ApplicationsRefreshButton.UseVisualStyleBackColor = true;
+            this.ApplicationsRefreshButton.Click += new System.EventHandler(this.ApplicationsRefreshButton_Click);
+            // 
             // DeleteApplicationButton
             // 
             this.DeleteApplicationButton.BackColor = System.Drawing.SystemColors.ButtonFace;
@@ -388,21 +403,6 @@
             this.createNewApplicationButton.Text = "New Game";
             this.createNewApplicationButton.UseVisualStyleBackColor = true;
             this.createNewApplicationButton.Click += new System.EventHandler(this.createNewApplicationButton_Click);
-            // 
-            // ApplicationsRefreshButton
-            // 
-            this.ApplicationsRefreshButton.BackColor = System.Drawing.SystemColors.Control;
-            this.ApplicationsRefreshButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(241)))), ((int)(((byte)(187)))));
-            this.ApplicationsRefreshButton.FlatAppearance.BorderSize = 0;
-            this.ApplicationsRefreshButton.Font = new System.Drawing.Font("Century Gothic", 11.25F);
-            this.ApplicationsRefreshButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.ApplicationsRefreshButton.Location = new System.Drawing.Point(367, 27);
-            this.ApplicationsRefreshButton.Name = "ApplicationsRefreshButton";
-            this.ApplicationsRefreshButton.Size = new System.Drawing.Size(86, 24);
-            this.ApplicationsRefreshButton.TabIndex = 2;
-            this.ApplicationsRefreshButton.Text = "Refresh";
-            this.ApplicationsRefreshButton.UseVisualStyleBackColor = true;
-            this.ApplicationsRefreshButton.Click += new System.EventHandler(this.ApplicationsRefreshButton_Click);
             // 
             // ApplicationsList
             // 
@@ -538,11 +538,13 @@
             this.tagInfoListView.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tagInfoListView.HideSelection = false;
             this.tagInfoListView.Location = new System.Drawing.Point(6, 25);
+            this.tagInfoListView.MultiSelect = false;
             this.tagInfoListView.Name = "tagInfoListView";
             this.tagInfoListView.Size = new System.Drawing.Size(460, 419);
             this.tagInfoListView.TabIndex = 31;
             this.tagInfoListView.UseCompatibleStateImageBehavior = false;
             this.tagInfoListView.View = System.Windows.Forms.View.Details;
+            this.tagInfoListView.SelectedIndexChanged += new System.EventHandler(this.TagInfoListView_SelectedIndexChanged);
             // 
             // IDLabel
             // 
@@ -819,13 +821,12 @@
             this.Controls.Add(this.connectedPortLabel);
             this.Controls.Add(this.displayCalibrationGroupBox);
             this.Controls.Add(this.menuStrip1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "MainWindow";
-            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Interactive RFID Display";
             this.displayCalibrationGroupBox.ResumeLayout(false);
