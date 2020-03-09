@@ -105,9 +105,6 @@
   <ItemGroup>
     <None Include="Resources\default.jpg" />
     <None Include="Resources\mage.png" />
-    <None Include="Resources\computer-icons-symbol-circle-play-icon-png-clip-art.png" />
-    <None Include="Resources\computer-icons-symbol-circle-play-icon-png-clip-art-removebg-preview.png" />
-    <None Include="Resources\30b884e7cea2e8c17a4cdfba252c2ce0.png" />
     <Content Include="rfid-tag-icon-18-256.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -91,6 +91,8 @@
             this.saveButton = new System.Windows.Forms.Button();
             this.imageTextBox = new System.Windows.Forms.TextBox();
             this.imageButton = new System.Windows.Forms.Button();
+            this.stopPlayingButton = new System.Windows.Forms.Button();
+            this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.displayCalibrationGroupBox.SuspendLayout();
             this.backgroundCalibrationGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.backgroundCalibPictureBox)).BeginInit();
@@ -99,6 +101,7 @@
             this.groupBox1.SuspendLayout();
             this.TagCreatorGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tagCreatorPreviewBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
             // 
             // displayCalibrationGroupBox
@@ -513,9 +516,9 @@
             this.loadedConfigurationLabel.ForeColor = System.Drawing.Color.Black;
             this.loadedConfigurationLabel.Location = new System.Drawing.Point(131, 34);
             this.loadedConfigurationLabel.Name = "loadedConfigurationLabel";
-            this.loadedConfigurationLabel.Size = new System.Drawing.Size(22, 13);
+            this.loadedConfigurationLabel.Size = new System.Drawing.Size(27, 13);
             this.loadedConfigurationLabel.TabIndex = 21;
-            this.loadedConfigurationLabel.Text = "NA";
+            this.loadedConfigurationLabel.Text = "N/A";
             // 
             // groupBox1
             // 
@@ -569,6 +572,7 @@
             // TagCreatorGroupBox
             // 
             this.TagCreatorGroupBox.BackColor = System.Drawing.Color.Transparent;
+            this.TagCreatorGroupBox.Controls.Add(this.stopPlayingButton);
             this.TagCreatorGroupBox.Controls.Add(this.EntranceSoundPlayButton);
             this.TagCreatorGroupBox.Controls.Add(this.UpdateSoundPlayButton);
             this.TagCreatorGroupBox.Controls.Add(this.label10);
@@ -801,6 +805,20 @@
             this.imageButton.UseVisualStyleBackColor = true;
             this.imageButton.Click += new System.EventHandler(this.ImageButton_Click);
             // 
+            // stopPlayingButton
+            // 
+            this.stopPlayingButton.Location = new System.Drawing.Point(6, 190);
+            this.stopPlayingButton.Name = "stopPlayingButton";
+            this.stopPlayingButton.Size = new System.Drawing.Size(25, 25);
+            this.stopPlayingButton.TabIndex = 18;
+            this.stopPlayingButton.Text = "❌";
+            this.stopPlayingButton.UseVisualStyleBackColor = true;
+            this.stopPlayingButton.Click += new System.EventHandler(this.StopPlayingButton_Click);
+            // 
+            // errorProvider1
+            // 
+            this.errorProvider1.ContainerControl = this;
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -841,6 +859,7 @@
             this.TagCreatorGroupBox.ResumeLayout(false);
             this.TagCreatorGroupBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tagCreatorPreviewBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -908,6 +927,8 @@
         private System.Windows.Forms.ColumnHeader ImageLabelListView;
         private System.Windows.Forms.ColumnHeader EntranceSoundLabel;
         private System.Windows.Forms.ColumnHeader UpdateSoundListView;
+        private System.Windows.Forms.Button stopPlayingButton;
+        private System.Windows.Forms.ErrorProvider errorProvider1;
     }
 }
 
